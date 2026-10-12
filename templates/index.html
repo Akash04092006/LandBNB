@@ -5,108 +5,704 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LandBNB | Vacation Homes & Condo Rentals - Explore Authentic Stays</title>
     <meta name="description" content="Find vacation rentals, cabins, beach houses, unique homes and experiences around the world on LandBNB.">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏖️</text></svg>">
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN with Custom Brand Tokens -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#FF385C',
+                            hover: '#E00B41',
+                            light: '#FFF1F2',
+                        },
+                        airbnb: {
+                            dark: '#222222',
+                            gray: '#717171',
+                            border: '#DDDDDD',
+                            'border-light': '#EBEBEB',
+                            light: '#F7F7F7',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-    <!-- Top Navigation Bar -->
-    <header class="header">
-        <div class="header-container">
-            <a href="/" class="logo">
-                <svg width="34" height="34" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<body class="bg-white text-airbnb-dark font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- ==============================================================================
+         STICKY HEADER & NAVIGATION BAR
+         ============================================================================== -->
+    <header id="mainHeader" class="sticky top-0 bg-white z-40 border-b border-airbnb-border-light transition-shadow duration-200">
+        <div class="max-w-[1780px] mx-auto px-4 sm:px-8 lg:px-12 py-3.5 flex items-center justify-between gap-4">
+            
+            <!-- Left: Logo & Brand -->
+            <a href="/" class="flex items-center gap-2 text-brand font-extrabold text-xl tracking-tight flex-shrink-0 group">
+                <svg class="w-8 h-8 transition-transform group-hover:scale-105" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16 2.5C9.648 2.5 4.5 7.648 4.5 14C4.5 19.344 8.78 24.363 14.547 28.98C15.412 29.673 16.588 29.673 17.453 28.98C23.22 24.363 27.5 19.344 27.5 14C27.5 7.648 22.352 2.5 16 2.5ZM16 18.5C13.515 18.5 11.5 16.485 11.5 14C11.5 11.515 13.515 9.5 16 9.5C18.485 9.5 20.5 11.515 20.5 14C20.5 16.485 18.485 18.5 16 18.5Z" fill="#FF385C"/>
                 </svg>
-                <span class="logo-text">LandBNB</span>
+                <span class="text-2xl font-bold tracking-tighter text-brand hidden sm:inline">LandBNB</span>
             </a>
 
-            <div class="search-bar">
-                <button class="search-btn">Anywhere</button>
-                <span class="divider"></span>
-                <button class="search-btn">Any week</button>
-                <span class="divider"></span>
-                <button class="search-btn search-btn-guests">Add guests</button>
-                <div class="search-icon-circle">
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="white">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                    </svg>
+            <!-- Center: Interactive Search Bar Pill Widget -->
+            <div class="relative flex-1 max-w-2xl mx-auto flex justify-center">
+                <div id="searchBarPill" class="flex items-center border border-airbnb-border rounded-full py-2 px-3 airbnb-shadow-search hover:shadow-md transition-all duration-200 bg-white cursor-pointer w-full max-w-lg md:max-w-xl">
+                    
+                    <!-- Where Trigger -->
+                    <div id="triggerWhere" class="search-segment flex-1 px-3 py-1 text-left">
+                        <div class="text-[11px] font-bold text-airbnb-dark tracking-wide uppercase">Where</div>
+                        <input id="inputWhere" type="text" placeholder="Search destinations" class="w-full bg-transparent text-xs text-airbnb-gray font-medium focus:outline-none placeholder-airbnb-gray truncate cursor-pointer" readonly>
+                    </div>
+
+                    <div class="h-6 w-[1px] bg-airbnb-border flex-shrink-0"></div>
+
+                    <!-- When Trigger -->
+                    <div id="triggerWhen" class="search-segment flex-1 px-3 py-1 text-left">
+                        <div class="text-[11px] font-bold text-airbnb-dark tracking-wide uppercase">When</div>
+                        <div id="displayWhen" class="text-xs text-airbnb-gray font-medium truncate">Add dates</div>
+                    </div>
+
+                    <div class="h-6 w-[1px] bg-airbnb-border flex-shrink-0"></div>
+
+                    <!-- Who Trigger -->
+                    <div id="triggerWho" class="search-segment flex-1 px-3 py-1 text-left">
+                        <div class="text-[11px] font-bold text-airbnb-dark tracking-wide uppercase">Who</div>
+                        <div id="displayWho" class="text-xs text-airbnb-gray font-medium truncate">Add guests</div>
+                    </div>
+
+                    <!-- Search Action Button -->
+                    <button id="btnSearchSubmit" class="w-9 h-9 rounded-full bg-brand hover:bg-brand-hover text-white flex items-center justify-center flex-shrink-0 ml-1 transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-sm" title="Search listings">
+                        <svg class="w-4 h-4 stroke-[2.5]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- ==============================================================================
+                     SEARCH POPOVERS CONTAINER
+                     ============================================================================== -->
+                
+                <!-- 1. Where Popover (Destinations Selection) -->
+                <div id="popoverWhere" class="hidden absolute top-16 left-0 right-0 sm:left-auto sm:w-[480px] bg-white rounded-3xl p-6 airbnb-shadow-lg border border-airbnb-border-light z-50 popoveranimate">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-airbnb-gray mb-4">Search by region or destination</h4>
+                    <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                        <button type="button" class="destination-tile flex flex-col items-center p-3 rounded-2xl hover:bg-airbnb-light border border-transparent hover:border-airbnb-border transition-all text-center group" data-destination="">
+                            <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-xl mb-2 group-hover:scale-105 transition-transform">🌍</div>
+                            <span class="text-xs font-semibold text-airbnb-dark">Flexible</span>
+                        </button>
+                        <button type="button" class="destination-tile flex flex-col items-center p-3 rounded-2xl hover:bg-airbnb-light border border-transparent hover:border-airbnb-border transition-all text-center group" data-destination="Malibu">
+                            <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-xl mb-2 group-hover:scale-105 transition-transform">🏖️</div>
+                            <span class="text-xs font-semibold text-airbnb-dark">Malibu</span>
+                        </button>
+                        <button type="button" class="destination-tile flex flex-col items-center p-3 rounded-2xl hover:bg-airbnb-light border border-transparent hover:border-airbnb-border transition-all text-center group" data-destination="Santorini">
+                            <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center text-xl mb-2 group-hover:scale-105 transition-transform">🏛️</div>
+                            <span class="text-xs font-semibold text-airbnb-dark">Santorini</span>
+                        </button>
+                        <button type="button" class="destination-tile flex flex-col items-center p-3 rounded-2xl hover:bg-airbnb-light border border-transparent hover:border-airbnb-border transition-all text-center group" data-destination="Kyoto">
+                            <div class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center text-xl mb-2 group-hover:scale-105 transition-transform">⛩️</div>
+                            <span class="text-xs font-semibold text-airbnb-dark">Kyoto</span>
+                        </button>
+                        <button type="button" class="destination-tile flex flex-col items-center p-3 rounded-2xl hover:bg-airbnb-light border border-transparent hover:border-airbnb-border transition-all text-center group" data-destination="Tromsø">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center text-xl mb-2 group-hover:scale-105 transition-transform">🌌</div>
+                            <span class="text-xs font-semibold text-airbnb-dark">Tromsø</span>
+                        </button>
+                        <button type="button" class="destination-tile flex flex-col items-center p-3 rounded-2xl hover:bg-airbnb-light border border-transparent hover:border-airbnb-border transition-all text-center group" data-destination="Lake Como">
+                            <div class="w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center text-xl mb-2 group-hover:scale-105 transition-transform">🚤</div>
+                            <span class="text-xs font-semibold text-airbnb-dark">Lake Como</span>
+                        </button>
+                        <button type="button" class="destination-tile flex flex-col items-center p-3 rounded-2xl hover:bg-airbnb-light border border-transparent hover:border-airbnb-border transition-all text-center group" data-destination="Zermatt">
+                            <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-xl mb-2 group-hover:scale-105 transition-transform">🏔️</div>
+                            <span class="text-xs font-semibold text-airbnb-dark">Zermatt</span>
+                        </button>
+                        <button type="button" class="destination-tile flex flex-col items-center p-3 rounded-2xl hover:bg-airbnb-light border border-transparent hover:border-airbnb-border transition-all text-center group" data-destination="Bora Bora">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-100 flex items-center justify-center text-xl mb-2 group-hover:scale-105 transition-transform">🏝️</div>
+                            <span class="text-xs font-semibold text-airbnb-dark">Bora Bora</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. When Popover (Calendar Range Selector) -->
+                <div id="popoverWhen" class="hidden absolute top-16 left-0 right-0 sm:left-auto sm:w-[580px] bg-white rounded-3xl p-6 airbnb-shadow-lg border border-airbnb-border-light z-50 popoveranimate">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-sm font-bold text-airbnb-dark">Select check-in & check-out dates</h4>
+                        <button id="btnClearDates" class="text-xs font-semibold text-brand hover:underline">Clear dates</button>
+                    </div>
+                    
+                    <!-- Month Navigation Header -->
+                    <div class="flex items-center justify-between mb-3 px-2">
+                        <button id="btnPrevMonth" class="p-1.5 rounded-full hover:bg-airbnb-light transition-colors text-airbnb-dark">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+                        <div id="calendarMonthTitle" class="font-bold text-sm text-airbnb-dark">November 2026</div>
+                        <button id="btnNextMonth" class="p-1.5 rounded-full hover:bg-airbnb-light transition-colors text-airbnb-dark">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- Days of Week Header -->
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-airbnb-gray mb-1">
+                        <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+                    </div>
+
+                    <!-- Interactive Calendar Grid Days -->
+                    <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1 text-center">
+                        <!-- Rendered dynamically by main.js -->
+                    </div>
+
+                    <!-- Quick Preset Chips -->
+                    <div class="mt-5 pt-4 border-t border-airbnb-border-light flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex gap-2">
+                            <button id="chipThisWeekend" class="text-xs font-semibold px-3 py-1.5 rounded-full border border-airbnb-border hover:border-airbnb-dark transition-colors">This Weekend</button>
+                            <button id="chipNextWeek" class="text-xs font-semibold px-3 py-1.5 rounded-full border border-airbnb-border hover:border-airbnb-dark transition-colors">Next Week</button>
+                        </div>
+                        <button id="btnApplyDates" class="text-xs font-bold px-4 py-2 bg-airbnb-dark hover:bg-black text-white rounded-full transition-colors">Apply</button>
+                    </div>
+                </div>
+
+                <!-- 3. Who Popover (Guests Counter Modal) -->
+                <div id="popoverWho" class="hidden absolute top-16 right-0 w-80 bg-white rounded-3xl p-6 airbnb-shadow-lg border border-airbnb-border-light z-50 popoveranimate">
+                    <!-- Adults -->
+                    <div class="flex items-center justify-between py-3 border-b border-airbnb-border-light">
+                        <div>
+                            <div class="text-sm font-bold text-airbnb-dark">Adults</div>
+                            <div class="text-xs text-airbnb-gray">Age 13 or above</div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button type="button" class="guest-btn-dec w-8 h-8 rounded-full border border-airbnb-border flex items-center justify-center text-airbnb-dark hover:border-airbnb-dark disabled:opacity-30 disabled:cursor-not-allowed transition-all" data-type="adults">-</button>
+                            <span id="countAdults" class="w-5 text-center font-bold text-sm">1</span>
+                            <button type="button" class="guest-btn-inc w-8 h-8 rounded-full border border-airbnb-border flex items-center justify-center text-airbnb-dark hover:border-airbnb-dark transition-all" data-type="adults">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Children -->
+                    <div class="flex items-center justify-between py-3 border-b border-airbnb-border-light">
+                        <div>
+                            <div class="text-sm font-bold text-airbnb-dark">Children</div>
+                            <div class="text-xs text-airbnb-gray">Ages 2–12</div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button type="button" class="guest-btn-dec w-8 h-8 rounded-full border border-airbnb-border flex items-center justify-center text-airbnb-dark hover:border-airbnb-dark disabled:opacity-30 disabled:cursor-not-allowed transition-all" data-type="children">-</button>
+                            <span id="countChildren" class="w-5 text-center font-bold text-sm">0</span>
+                            <button type="button" class="guest-btn-inc w-8 h-8 rounded-full border border-airbnb-border flex items-center justify-center text-airbnb-dark hover:border-airbnb-dark transition-all" data-type="children">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Infants -->
+                    <div class="flex items-center justify-between py-3 border-b border-airbnb-border-light">
+                        <div>
+                            <div class="text-sm font-bold text-airbnb-dark">Infants</div>
+                            <div class="text-xs text-airbnb-gray">Under 2</div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button type="button" class="guest-btn-dec w-8 h-8 rounded-full border border-airbnb-border flex items-center justify-center text-airbnb-dark hover:border-airbnb-dark disabled:opacity-30 disabled:cursor-not-allowed transition-all" data-type="infants">-</button>
+                            <span id="countInfants" class="w-5 text-center font-bold text-sm">0</span>
+                            <button type="button" class="guest-btn-inc w-8 h-8 rounded-full border border-airbnb-border flex items-center justify-center text-airbnb-dark hover:border-airbnb-dark transition-all" data-type="infants">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Pets -->
+                    <div class="flex items-center justify-between py-3">
+                        <div>
+                            <div class="text-sm font-bold text-airbnb-dark">Pets</div>
+                            <div class="text-xs text-airbnb-gray underline cursor-pointer">Bringing a service animal?</div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button type="button" class="guest-btn-dec w-8 h-8 rounded-full border border-airbnb-border flex items-center justify-center text-airbnb-dark hover:border-airbnb-dark disabled:opacity-30 disabled:cursor-not-allowed transition-all" data-type="pets">-</button>
+                            <span id="countPets" class="w-5 text-center font-bold text-sm">0</span>
+                            <button type="button" class="guest-btn-inc w-8 h-8 rounded-full border border-airbnb-border flex items-center justify-center text-airbnb-dark hover:border-airbnb-dark transition-all" data-type="pets">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Popover Actions -->
+                    <div class="mt-4 pt-3 border-t border-airbnb-border-light flex items-center justify-between">
+                        <button id="btnClearGuests" class="text-xs font-semibold text-airbnb-gray hover:text-airbnb-dark underline">Clear</button>
+                        <button id="btnApplyGuests" class="text-xs font-bold px-4 py-2 bg-airbnb-dark hover:bg-black text-white rounded-full transition-colors">Apply</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="nav-right">
-                <a href="#host" class="nav-link host-link">Become a Host</a>
-                <div class="user-menu-btn">
-                    <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
-                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+            <!-- Right: User Menu & Actions -->
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <a href="#host" class="hidden md:inline-block text-xs font-bold text-airbnb-dark hover:bg-airbnb-light px-3.5 py-2.5 rounded-full transition-colors">
+                    Become a Host
+                </a>
+
+                <button class="p-2.5 rounded-full hover:bg-airbnb-light text-airbnb-dark transition-colors" title="Language and currency">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                     </svg>
-                    <div class="avatar-placeholder">
-                        <svg width="18" height="18" viewBox="0 0 16 16" fill="#717171">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </button>
+
+                <!-- Profile Pill Menu Trigger -->
+                <div class="relative">
+                    <button id="btnUserMenu" class="flex items-center gap-3 border border-airbnb-border rounded-full py-1.5 pl-3.5 pr-1.5 hover:shadow-md transition-shadow duration-200">
+                        <svg class="w-4 h-4 text-airbnb-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <line x1="3" y1="12" x2="21" y2="12" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="3" y1="6" x2="21" y2="6" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="3" y1="18" x2="21" y2="18" stroke-width="2" stroke-linecap="round"/>
                         </svg>
+                        <div class="relative w-7 h-7 rounded-full overflow-hidden bg-slate-200">
+                            <img id="userAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Sophia Chen" class="w-full h-full object-cover">
+                            <span class="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 rounded-full border border-white"></span>
+                        </div>
+                    </button>
+
+                    <!-- User Dropdown Menu -->
+                    <div id="userDropdownMenu" class="hidden absolute right-0 top-12 w-60 bg-white rounded-2xl py-2 airbnb-shadow-lg border border-airbnb-border-light z-50 popoveranimate">
+                        <div class="px-4 py-2 border-b border-airbnb-border-light">
+                            <div class="text-xs font-bold text-airbnb-dark" id="userNameDisplay">Sophia Chen</div>
+                            <div class="text-[11px] text-airbnb-gray truncate" id="userEmailDisplay">sophia.chen@example.com</div>
+                        </div>
+                        <button id="menuItemTrips" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-airbnb-dark hover:bg-airbnb-light flex items-center justify-between">
+                            <span>My Trips & Bookings</span>
+                            <span id="userBookingsBadge" class="bg-brand text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">...</span>
+                        </button>
+                        <button id="menuItemWishlist" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-airbnb-dark hover:bg-airbnb-light flex items-center justify-between">
+                            <span>Saved Wishlists</span>
+                            <span id="userWishlistBadge" class="bg-gray-100 text-airbnb-dark text-[10px] px-1.5 py-0.5 rounded-full font-bold">...</span>
+                        </button>
+                        <div class="h-[1px] bg-airbnb-border-light my-1"></div>
+                        <a href="#host" class="block px-4 py-2 text-xs text-airbnb-dark hover:bg-airbnb-light">LandBNB your home</a>
+                        <a href="#account" class="block px-4 py-2 text-xs text-airbnb-dark hover:bg-airbnb-light">Account Settings</a>
+                        <a href="#help" class="block px-4 py-2 text-xs text-airbnb-dark hover:bg-airbnb-light">Help Center</a>
+                        <div class="h-[1px] bg-airbnb-border-light my-1"></div>
+                        <button class="w-full text-left px-4 py-2 text-xs text-brand font-semibold hover:bg-brand-light">Log out</button>
                     </div>
                 </div>
+
             </div>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="main-container">
-        <!-- Categories Bar -->
-        <section class="categories-bar" id="categoriesBar">
-            <button class="category-chip active" data-category="All">All Homes</button>
-            <button class="category-chip" data-category="Beachfront">Beachfront</button>
-            <button class="category-chip" data-category="Cabins">Cabins</button>
-            <button class="category-chip" data-category="Mansions">Mansions</button>
-            <button class="category-chip" data-category="Amazing pools">Amazing pools</button>
-            <button class="category-chip" data-category="Trending">Trending</button>
-            <button class="category-chip" data-category="Design">Design</button>
-            <button class="category-chip" data-category="Lakefront">Lakefront</button>
-            <button class="category-chip" data-category="Countryside">Countryside</button>
-        </section>
+    <!-- ==============================================================================
+         HORIZONTAL SCROLLING CATEGORY FILTER BAR
+         ============================================================================== -->
+    <div class="sticky top-[69px] bg-white z-30 border-b border-airbnb-border-light airbnb-shadow-sm">
+        <div class="max-w-[1780px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center gap-4 py-2">
+            
+            <!-- Category Scroll Wrapper -->
+            <div class="relative flex-1 overflow-hidden">
+                <!-- Left Scroll Chevron -->
+                <button id="btnScrollCatLeft" class="hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white border border-airbnb-border shadow-md flex items-center justify-center text-airbnb-dark hover:scale-105 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
 
-        <!-- Listings Grid -->
-        <section class="listings-section">
-            <div class="section-header">
-                <h2>Featured Properties (<span id="listingsCount">{{ listings|length }}</span>)</h2>
+                <!-- Scrollable Category List -->
+                <div id="categoryContainer" class="flex items-center gap-6 overflow-x-auto no-scrollbar scroll-smooth px-1">
+                    <div class="category-item active" data-category="All">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        <span class="text-xs">All</span>
+                    </div>
+                    <div class="category-item" data-category="Beachfront">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 18c1.5-1.5 3.5-1.5 5 0s3.5 1.5 5 0 3.5-1.5 5 0 3.5 1.5 5 0"></path><path d="M2 22c1.5-1.5 3.5-1.5 5 0s3.5 1.5 5 0 3.5-1.5 5 0 3.5 1.5 5 0"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span class="text-xs">Beachfront</span>
+                    </div>
+                    <div class="category-item" data-category="Cabins">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 22h20"></path><path d="M4 22V10l8-6 8 6v12"></path><path d="M10 22V14h4v8"></path></svg>
+                        <span class="text-xs">Cabins</span>
+                    </div>
+                    <div class="category-item" data-category="Mansions">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><path d="M9 10h.01"></path><path d="M15 10h.01"></path><path d="M9 14h.01"></path><path d="M15 14h.01"></path></svg>
+                        <span class="text-xs">Mansions</span>
+                    </div>
+                    <div class="category-item" data-category="Amazing pools">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12h20"></path><path d="M2 16h20"></path><path d="M2 20h20"></path><circle cx="16" cy="6" r="2"></circle><path d="M14 8l-2 3-3-1"></path></svg>
+                        <span class="text-xs">Amazing pools</span>
+                    </div>
+                    <div class="category-item" data-category="Trending">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                        <span class="text-xs">Trending</span>
+                    </div>
+                    <div class="category-item" data-category="Design">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                        <span class="text-xs">Design</span>
+                    </div>
+                    <div class="category-item" data-category="Lakefront">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12h20"></path><path d="M7 12l5-9 5 9"></path><path d="M2 17c2-1 4-1 6 0s4 1 6 0 4-1 6 0"></path></svg>
+                        <span class="text-xs">Lakefront</span>
+                    </div>
+                    <div class="category-item" data-category="Countryside">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18"></path><path d="M8 21v-4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4"></path><path d="M3 14l9-7 9 7"></path></svg>
+                        <span class="text-xs">Countryside</span>
+                    </div>
+                </div>
+
+                <!-- Right Scroll Chevron -->
+                <button id="btnScrollCatRight" class="hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white border border-airbnb-border shadow-md flex items-center justify-center text-airbnb-dark hover:scale-105 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
 
-            <div class="listings-grid" id="listingsGrid">
-                {% for item in listings %}
-                <article class="listing-card" data-category="{{ item.category }}">
-                    <div class="card-image-wrap">
-                        <img src="{{ item.images[0] }}" alt="{{ item.title }}" loading="lazy">
-                        <span class="card-category-badge">{{ item.category }}</span>
-                    </div>
-                    <div class="card-info">
-                        <div class="card-top-row">
-                            <h3 class="card-location">{{ item.location }}</h3>
-                            <div class="card-rating">
-                                <span class="star-icon">★</span>
-                                <span>{{ "%.2f"|format(item.rating) }}</span>
-                            </div>
-                        </div>
-                        <p class="card-title">{{ item.title }}</p>
-                        <p class="card-host">Hosted by {{ item.host_name }}</p>
-                        <div class="card-price-row">
-                            <span class="card-price">${{ item.price_per_night }}</span>
-                            <span class="card-price-period">night</span>
-                        </div>
-                    </div>
-                </article>
-                {% endfor %}
+            <!-- Filters Button -->
+            <button id="btnOpenFilters" class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-airbnb-border hover:border-airbnb-dark transition-all text-xs font-semibold text-airbnb-dark flex-shrink-0">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="4" y1="21" x2="4" y2="14"></line>
+                    <line x1="4" y1="10" x2="4" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12" y2="3"></line>
+                    <line x1="20" y1="21" x2="20" y2="16"></line>
+                    <line x1="20" y1="12" x2="20" y2="3"></line>
+                    <line x1="1" y1="14" x2="7" y2="14"></line>
+                    <line x1="9" y1="8" x2="15" y2="8"></line>
+                    <line x1="17" y1="16" x2="23" y2="16"></line>
+                </svg>
+                <span>Filters</span>
+                <span id="activeFiltersBadge" class="hidden bg-airbnb-dark text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==============================================================================
+         MAIN LISTINGS GRID SECTION
+         ============================================================================== -->
+    <main class="max-w-[1780px] mx-auto px-4 sm:px-8 lg:px-12 py-6 flex-1 w-full">
+        <!-- Results Summary Bar -->
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-base sm:text-lg font-bold text-airbnb-dark flex items-center gap-2">
+                <span>Stays available</span>
+                <span id="resultsCountBadge" class="text-xs font-normal text-airbnb-gray bg-airbnb-light px-2.5 py-1 rounded-full border border-airbnb-border-light">(16 properties)</span>
+            </h1>
+
+            <div id="activeFiltersTags" class="hidden flex items-center gap-2">
+                <button id="btnClearAllFilters" class="text-xs font-semibold text-brand hover:underline">Clear all filters</button>
             </div>
-        </section>
+        </div>
+
+        <!-- Responsive Listings Grid -->
+        <div id="listingsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <!-- Cards are loaded asynchronously by main.js with fallback initial rendering -->
+        </div>
+
+        <!-- Empty State Container -->
+        <div id="emptyState" class="hidden text-center py-16">
+            <div class="text-5xl mb-4">🔍</div>
+            <h3 class="text-lg font-bold text-airbnb-dark mb-2">No matching stays found</h3>
+            <p class="text-sm text-airbnb-gray max-w-md mx-auto mb-6">Try adjusting your destination search, expanding your price range, or clearing active category filters.</p>
+            <button id="btnResetSearch" class="px-6 py-2.5 bg-airbnb-dark hover:bg-black text-white text-xs font-bold rounded-full transition-colors">Reset all filters</button>
+        </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <p>&copy; 2026 LandBNB, Inc. All rights reserved. Privacy · Terms · Sitemap · Company Details</p>
+    <!-- ==============================================================================
+         FILTERS MODAL
+         ============================================================================== -->
+    <div id="filtersModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div class="modal-content relative bg-white w-full max-w-lg rounded-3xl p-6 airbnb-shadow-lg max-h-[90vh] overflow-y-auto no-scrollbar z-10 border border-airbnb-border-light">
+            <div class="flex items-center justify-between pb-4 border-b border-airbnb-border-light mb-6">
+                <button id="btnCloseFilters" class="p-1 rounded-full hover:bg-airbnb-light text-airbnb-dark">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+                <h3 class="font-bold text-base text-airbnb-dark">Filters</h3>
+                <div class="w-6"></div>
+            </div>
+
+            <!-- Price Range -->
+            <div class="mb-6 pb-6 border-b border-airbnb-border-light">
+                <h4 class="text-sm font-bold text-airbnb-dark mb-1">Price range</h4>
+                <p class="text-xs text-airbnb-gray mb-4">Nightly prices before taxes and fees</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="border border-airbnb-border rounded-xl p-2.5">
+                        <label class="text-[10px] uppercase font-bold text-airbnb-gray block">Minimum</label>
+                        <div class="flex items-center">
+                            <span class="text-sm font-semibold mr-1">$</span>
+                            <input id="filterMinPrice" type="number" min="0" placeholder="0" class="w-full text-sm font-bold focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="border border-airbnb-border rounded-xl p-2.5">
+                        <label class="text-[10px] uppercase font-bold text-airbnb-gray block">Maximum</label>
+                        <div class="flex items-center">
+                            <span class="text-sm font-semibold mr-1">$</span>
+                            <input id="filterMaxPrice" type="number" min="0" placeholder="2500" class="w-full text-sm font-bold focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Amenities -->
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-airbnb-dark mb-3">Amenities</h4>
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <label class="flex items-center gap-2 cursor-pointer p-2 rounded-xl hover:bg-airbnb-light transition-colors">
+                        <input type="checkbox" value="Wifi" class="filter-amenity-checkbox accent-brand w-4 h-4 rounded">
+                        <span>Wifi</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer p-2 rounded-xl hover:bg-airbnb-light transition-colors">
+                        <input type="checkbox" value="Pool" class="filter-amenity-checkbox accent-brand w-4 h-4 rounded">
+                        <span>Pool</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer p-2 rounded-xl hover:bg-airbnb-light transition-colors">
+                        <input type="checkbox" value="Kitchen" class="filter-amenity-checkbox accent-brand w-4 h-4 rounded">
+                        <span>Kitchen</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer p-2 rounded-xl hover:bg-airbnb-light transition-colors">
+                        <input type="checkbox" value="Air conditioning" class="filter-amenity-checkbox accent-brand w-4 h-4 rounded">
+                        <span>Air conditioning</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer p-2 rounded-xl hover:bg-airbnb-light transition-colors">
+                        <input type="checkbox" value="Free parking on premises" class="filter-amenity-checkbox accent-brand w-4 h-4 rounded">
+                        <span>Free parking</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer p-2 rounded-xl hover:bg-airbnb-light transition-colors">
+                        <input type="checkbox" value="Hot tub" class="filter-amenity-checkbox accent-brand w-4 h-4 rounded">
+                        <span>Hot tub</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer p-2 rounded-xl hover:bg-airbnb-light transition-colors">
+                        <input type="checkbox" value="Dedicated workspace" class="filter-amenity-checkbox accent-brand w-4 h-4 rounded">
+                        <span>Dedicated workspace</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer p-2 rounded-xl hover:bg-airbnb-light transition-colors">
+                        <input type="checkbox" value="Beachfront access" class="filter-amenity-checkbox accent-brand w-4 h-4 rounded">
+                        <span>Beachfront access</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Footer Controls -->
+            <div class="pt-4 border-t border-airbnb-border-light flex items-center justify-between">
+                <button id="btnClearModalFilters" class="text-xs font-bold text-airbnb-dark underline">Clear all</button>
+                <button id="btnApplyModalFilters" class="px-6 py-2.5 bg-brand hover:bg-brand-hover text-white text-xs font-bold rounded-full transition-colors">Show places</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==============================================================================
+         LISTING DETAIL & BOOKING MODAL
+         ============================================================================== -->
+    <div id="listingDetailModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div class="modal-content relative bg-white w-full max-w-4xl rounded-3xl p-6 sm:p-8 airbnb-shadow-lg max-h-[92vh] overflow-y-auto no-scrollbar z-10 border border-airbnb-border-light">
+            
+            <!-- Top Controls -->
+            <div class="flex items-center justify-between pb-4 border-b border-airbnb-border-light mb-4">
+                <button id="btnCloseDetailModal" class="p-1.5 rounded-full hover:bg-airbnb-light text-airbnb-dark">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+                <div class="flex items-center gap-3">
+                    <button id="btnDetailWishlistHeart" class="p-2 rounded-full hover:bg-airbnb-light text-airbnb-dark">
+                        <svg class="w-5 h-5 heart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Title & Location Header -->
+            <div class="mb-4">
+                <h2 id="modalListingTitle" class="text-xl sm:text-2xl font-bold text-airbnb-dark mb-1">...</h2>
+                <div class="flex flex-wrap items-center gap-3 text-xs text-airbnb-gray font-medium">
+                    <span class="flex items-center gap-1 text-airbnb-dark font-bold"><span class="text-brand">★</span> <span id="modalListingRating">...</span></span>
+                    <span>·</span>
+                    <span id="modalListingReviewsCount">... reviews</span>
+                    <span>·</span>
+                    <span id="modalListingLocation" class="underline">...</span>
+                </div>
+            </div>
+
+            <!-- Mosaic Photo Gallery -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-2 rounded-2xl overflow-hidden mb-6 h-64 sm:h-80">
+                <div class="md:col-span-2 h-full">
+                    <img id="modalGalleryMain" src="" alt="Main Property View" class="w-full h-full object-cover cursor-pointer hover:opacity-95 transition-opacity">
+                </div>
+                <div class="hidden md:grid md:col-span-2 grid-cols-2 gap-2 h-full">
+                    <img id="modalGalleryImg1" src="" alt="Photo 1" class="w-full h-full object-cover">
+                    <img id="modalGalleryImg2" src="" alt="Photo 2" class="w-full h-full object-cover">
+                    <img id="modalGalleryImg3" src="" alt="Photo 3" class="w-full h-full object-cover">
+                    <img id="modalGalleryImg4" src="" alt="Photo 4" class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <!-- Main Split Layout (Details vs Booking Box) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Column (Description, Host, Amenities, Reviews) -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Host Info -->
+                    <div class="flex items-center justify-between pb-6 border-b border-airbnb-border-light">
+                        <div>
+                            <h3 class="text-base font-bold text-airbnb-dark" id="modalHostHeader">Hosted by ...</h3>
+                            <p class="text-xs text-airbnb-gray">Dedicated luxury stay · Superhost verified</p>
+                        </div>
+                        <img id="modalHostAvatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80" alt="Host Avatar" class="w-12 h-12 rounded-full object-cover border border-airbnb-border">
+                    </div>
+
+                    <!-- Description -->
+                    <div class="pb-6 border-b border-airbnb-border-light">
+                        <h4 class="text-sm font-bold text-airbnb-dark mb-2">About this space</h4>
+                        <p id="modalListingDesc" class="text-xs sm:text-sm text-airbnb-gray leading-relaxed">...</p>
+                    </div>
+
+                    <!-- Amenities -->
+                    <div class="pb-6 border-b border-airbnb-border-light">
+                        <h4 class="text-sm font-bold text-airbnb-dark mb-3">What this place offers</h4>
+                        <div id="modalAmenitiesGrid" class="grid grid-cols-2 gap-3 text-xs text-airbnb-dark">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Reviews List -->
+                    <div>
+                        <h4 class="text-sm font-bold text-airbnb-dark mb-3 flex items-center gap-1.5">
+                            <span class="text-brand">★</span>
+                            <span id="modalReviewsHeader">Reviews</span>
+                        </h4>
+                        <div id="modalReviewsList" class="space-y-4">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column (Reservation Booking Box) -->
+                <div>
+                    <div class="sticky top-4 bg-white border border-airbnb-border rounded-3xl p-6 airbnb-shadow-md">
+                        <div class="flex items-baseline justify-between mb-4">
+                            <div>
+                                <span class="text-2xl font-extrabold text-airbnb-dark" id="modalPricePerNight">$0</span>
+                                <span class="text-xs text-airbnb-gray"> / night</span>
+                            </div>
+                            <div class="text-xs font-bold text-airbnb-dark flex items-center gap-1">
+                                <span class="text-brand">★</span>
+                                <span id="modalBookingRating">...</span>
+                            </div>
+                        </div>
+
+                        <!-- Date inputs inside booking widget -->
+                        <div class="border border-airbnb-border rounded-2xl mb-4 overflow-hidden">
+                            <div class="grid grid-cols-2 border-b border-airbnb-border">
+                                <div class="p-2.5 border-r border-airbnb-border">
+                                    <label class="text-[9px] uppercase font-bold text-airbnb-gray block">Check-in</label>
+                                    <input id="bookingInputCheckIn" type="date" class="w-full text-xs font-bold focus:outline-none bg-transparent">
+                                </div>
+                                <div class="p-2.5">
+                                    <label class="text-[9px] uppercase font-bold text-airbnb-gray block">Check-out</label>
+                                    <input id="bookingInputCheckOut" type="date" class="w-full text-xs font-bold focus:outline-none bg-transparent">
+                                </div>
+                            </div>
+                            <div class="p-2.5">
+                                <label class="text-[9px] uppercase font-bold text-airbnb-gray block">Guests</label>
+                                <div class="text-xs font-bold text-airbnb-dark" id="bookingGuestsDisplay">1 guest</div>
+                            </div>
+                        </div>
+
+                        <!-- Price Calculation Breakdown -->
+                        <div class="space-y-2 text-xs text-airbnb-gray mb-4 pb-4 border-b border-airbnb-border-light">
+                            <div class="flex justify-between">
+                                <span id="calcNightsLabel">$0 x 4 nights</span>
+                                <span id="calcAccommodationCost">$0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Cleaning fee</span>
+                                <span>$75.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>LandBNB service fee (12%)</span>
+                                <span id="calcServiceFee">$0</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-baseline mb-5 text-sm font-bold text-airbnb-dark">
+                            <span>Total before taxes</span>
+                            <span class="text-base text-brand font-extrabold" id="calcTotalPrice">$0</span>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button id="btnSubmitReservation" class="w-full py-3 bg-brand hover:bg-brand-hover text-white text-xs font-bold rounded-2xl transition-all shadow-md transform hover:scale-[1.01] active:scale-[0.99]">
+                            Reserve
+                        </button>
+                        <p class="text-[11px] text-center text-airbnb-gray mt-2">You won't be charged yet</p>
+
+                        <!-- Reservation Success Banner -->
+                        <div id="bookingSuccessBanner" class="hidden mt-4 p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs text-emerald-800 animate-fadeIn">
+                            <div class="font-bold mb-1">🎉 Reservation Confirmed!</div>
+                            <div class="text-[11px]" id="bookingConfirmationText">Booking ID: ...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==============================================================================
+         USER BOOKINGS / TRIPS MODAL
+         ============================================================================== -->
+    <div id="userBookingsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div class="modal-content relative bg-white w-full max-w-2xl rounded-3xl p-6 airbnb-shadow-lg max-h-[85vh] overflow-y-auto no-scrollbar z-10 border border-airbnb-border-light">
+            <div class="flex items-center justify-between pb-4 border-b border-airbnb-border-light mb-4">
+                <h3 class="font-bold text-base text-airbnb-dark">My Confirmed Bookings</h3>
+                <button id="btnCloseBookingsModal" class="p-1 rounded-full hover:bg-airbnb-light text-airbnb-dark">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div id="userBookingsList" class="space-y-4">
+                <!-- Loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==============================================================================
+         USER WISHLIST MODAL
+         ============================================================================== -->
+    <div id="userWishlistModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div class="modal-content relative bg-white w-full max-w-2xl rounded-3xl p-6 airbnb-shadow-lg max-h-[85vh] overflow-y-auto no-scrollbar z-10 border border-airbnb-border-light">
+            <div class="flex items-center justify-between pb-4 border-b border-airbnb-border-light mb-4">
+                <h3 class="font-bold text-base text-airbnb-dark">Your Saved Wishlist</h3>
+                <button id="btnCloseWishlistModal" class="p-1 rounded-full hover:bg-airbnb-light text-airbnb-dark">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div id="userWishlistContent" class="space-y-4">
+                <!-- Loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==============================================================================
+         FOOTER
+         ============================================================================== -->
+    <footer class="border-t border-airbnb-border-light bg-airbnb-light mt-auto">
+        <div class="max-w-[1780px] mx-auto px-4 sm:px-8 lg:px-12 py-8 text-xs text-airbnb-gray">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-4">
+                    <span>&copy; 2026 LandBNB, Inc.</span>
+                    <span>·</span>
+                    <a href="#privacy" class="hover:underline">Privacy</a>
+                    <span>·</span>
+                    <a href="#terms" class="hover:underline">Terms</a>
+                    <span>·</span>
+                    <a href="#sitemap" class="hover:underline">Sitemap</a>
+                    <span>·</span>
+                    <a href="#details" class="hover:underline">Company details</a>
+                </div>
+                <div class="flex items-center gap-6 font-semibold text-airbnb-dark">
+                    <span class="flex items-center gap-1.5 cursor-pointer hover:underline">
+                        🌐 English (US)
+                    </span>
+                    <span class="cursor-pointer hover:underline">
+                        $ USD
+                    </span>
+                </div>
+            </div>
         </div>
     </footer>
 
+    <!-- Client-side Application Script -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
