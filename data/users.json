@@ -1,0 +1,67 @@
+[
+  {
+    "user_id": "user-001",
+    "name": "Sophia Chen",
+    "email": "sophia.chen@example.com",
+    "profile_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    "wishlist": [
+      "listing-001",
+      "listing-004",
+      "listing-007"
+    ]
+  },
+  {
+    "user_id": "user-002",
+    "name": "Marcus Vance",
+    "email": "marcus.vance@example.com",
+    "profile_image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "wishlist": [
+      "listing-002",
+      "listing-008",
+      "listing-014"
+    ]
+  },
+  {
+    "user_id": "user-003",
+    "name": "Elena Rostova",
+    "email": "elena.rostova@example.com",
+    "profile_image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80",
+    "wishlist": [
+      "listing-003",
+      "listing-006",
+      "listing-013"
+    ]
+  },
+  {
+    "user_id": "user-004",
+    "name": "David Kim",
+    "email": "david.kim@example.com",
+    "profile_image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+    "wishlist": [
+      "listing-005",
+      "listing-011"
+    ]
+  },
+  {
+    "user_id": "user-005",
+    "name": "Amina Al-Mansoor",
+    "email": "amina.mansoor@example.com",
+    "profile_image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+    "wishlist": [
+      "listing-001",
+      "listing-009",
+      "listing-015"
+    ]
+  },
+  {
+    "user_id": "user-006",
+    "name": "Oliver Twist",
+    "email": "oliver.twist@example.com",
+    "profile_image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80",
+    "wishlist": [
+      "listing-010",
+      "listing-012",
+      "listing-016"
+    ]
+  }
+]

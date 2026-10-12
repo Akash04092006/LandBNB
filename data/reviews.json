@@ -1,0 +1,114 @@
+[
+  {
+    "review_id": "review-001",
+    "listing_id": "listing-001",
+    "user_name": "Marcus Vance",
+    "comment": "An extraordinary experience from start to finish. The infinity pool overlooking the Malibu sunset was even more breathtaking in person than in the photos. Elena was the consummate host.",
+    "rating": 5.0,
+    "date": "2026-08-14"
+  },
+  {
+    "review_id": "review-002",
+    "listing_id": "listing-001",
+    "user_name": "Sophia Chen",
+    "comment": "Unbelievable beachfront access and architectural detail. The kitchen was equipped like a Michelin restaurant. We fell asleep each night to the sound of crashing waves.",
+    "rating": 5.0,
+    "date": "2026-09-02"
+  },
+  {
+    "review_id": "review-003",
+    "listing_id": "listing-002",
+    "user_name": "David Kim",
+    "comment": "Watching the Northern Lights dance directly above through the bedroom skylight was a bucket-list memory. The outdoor cedar hot tub in sub-zero air was magical.",
+    "rating": 5.0,
+    "date": "2026-02-18"
+  },
+  {
+    "review_id": "review-004",
+    "listing_id": "listing-002",
+    "user_name": "Emma Watson",
+    "comment": "Cozy, warm, and deeply authentic Norwegian cabin charm. The wood-fired sauna after snowshoeing was perfection.",
+    "rating": 4.9,
+    "date": "2026-03-05"
+  },
+  {
+    "review_id": "review-005",
+    "listing_id": "listing-003",
+    "user_name": "Liam Gallagher",
+    "comment": "Staying in this restored Tuscan estate felt like stepping into an Italian romance film. We harvested fresh herbs from the terrace for homemade pasta.",
+    "rating": 4.8,
+    "date": "2026-06-22"
+  },
+  {
+    "review_id": "review-006",
+    "listing_id": "listing-004",
+    "user_name": "Amina Al-Mansoor",
+    "comment": "The caldera pool in Santorini is legendary. Having breakfast served on our sun terrace watching the sailboats below was pure bliss.",
+    "rating": 5.0,
+    "date": "2026-07-11"
+  },
+  {
+    "review_id": "review-007",
+    "listing_id": "listing-005",
+    "user_name": "Nathan Drake",
+    "comment": "Zen perfection in Kyoto. The integration of modern minimalist design with historic Machiya woodcraft is world-class. Loved the onsen soaking tub.",
+    "rating": 5.0,
+    "date": "2026-04-19"
+  },
+  {
+    "review_id": "review-008",
+    "listing_id": "listing-006",
+    "user_name": "Isabella Romano",
+    "comment": "Lake Como at its finest. Having a private boat dock allowed us to tour Bellagio and Varenna effortlessly. Can't wait to return.",
+    "rating": 5.0,
+    "date": "2026-05-30"
+  },
+  {
+    "review_id": "review-009",
+    "listing_id": "listing-007",
+    "user_name": "Lucas Meyer",
+    "comment": "The water in Bora Bora is surreal. Snorkeling directly off our villa deck with rays and tropical fish every morning was incredible.",
+    "rating": 5.0,
+    "date": "2026-01-25"
+  },
+  {
+    "review_id": "review-010",
+    "listing_id": "listing-008",
+    "user_name": "Clara Oswald",
+    "comment": "The Matterhorn views from the heated outdoor pool are unlike anything else on Earth. Pristine chalet luxury and top-notch ski access.",
+    "rating": 4.9,
+    "date": "2026-02-09"
+  },
+  {
+    "review_id": "review-011",
+    "listing_id": "listing-009",
+    "user_name": "Zachary Taylor",
+    "comment": "The ultimate luxury estate in Beverly Hills. The screening room and infinity pool views overlooking the LA skyline made our celebration unforgettable.",
+    "rating": 4.9,
+    "date": "2026-08-01"
+  },
+  {
+    "review_id": "review-012",
+    "listing_id": "listing-010",
+    "user_name": "Maya Lin",
+    "comment": "The A-frame in Big Sur is the coziest retreat imaginable. Peaceful sounds of the creek, giant redwoods, and wonderful vinyl records.",
+    "rating": 5.0,
+    "date": "2026-09-18"
+  },
+  {
+    "review_id": "review-013",
+    "listing_id": "listing-011",
+    "user_name": "Ethan Hunt",
+    "comment": "Architectural masterpiece in the desert. The mirrored walls blend into the rocks, and watching the stars with the telescope was unmatched.",
+    "rating": 4.8,
+    "date": "2026-05-12"
+  },
+  {
+    "review_id": "review-014",
+    "listing_id": "listing-013",
+    "user_name": "Charlotte Bronte",
+    "comment": "The fragrance of lavender at dusk, warm Provence breezes, and authentic stone craftsmanship. A dream vacation.",
+    "rating": 5.0,
+    "date": "2026-07-04"
+  }
+]

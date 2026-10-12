@@ -1,0 +1,58 @@
+[
+  {
+    "booking_id": "booking-001",
+    "listing_id": "listing-001",
+    "user_id": "user-001",
+    "check_in": "2026-11-05",
+    "check_out": "2026-11-09",
+    "total_price": 3800.00
+  },
+  {
+    "booking_id": "booking-002",
+    "listing_id": "listing-002",
+    "user_id": "user-002",
+    "check_in": "2026-12-10",
+    "check_out": "2026-12-15",
+    "total_price": 1900.00
+  },
+  {
+    "booking_id": "booking-003",
+    "listing_id": "listing-004",
+    "user_id": "user-003",
+    "check_in": "2026-10-20",
+    "check_out": "2026-10-25",
+    "total_price": 4400.00
+  },
+  {
+    "booking_id": "booking-004",
+    "listing_id": "listing-005",
+    "user_id": "user-004",
+    "check_in": "2026-11-12",
+    "check_out": "2026-11-16",
+    "total_price": 1840.00
+  },
+  {
+    "booking_id": "booking-005",
+    "listing_id": "listing-008",
+    "user_id": "user-005",
+    "check_in": "2026-12-22",
+    "check_out": "2026-12-28",
+    "total_price": 5340.00
+  },
+  {
+    "booking_id": "booking-006",
+    "listing_id": "listing-010",
+    "user_id": "user-006",
+    "check_in": "2026-11-01",
+    "check_out": "2026-11-04",
+    "total_price": 960.00
+  },
+  {
+    "booking_id": "booking-007",
+    "listing_id": "listing-003",
+    "user_id": "user-001",
+    "check_in": "2026-10-15",
+    "check_out": "2026-10-19",
+    "total_price": 2880.00
+  }
+]

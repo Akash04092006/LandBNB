@@ -1,0 +1,447 @@
+[
+  {
+    "id": "listing-001",
+    "title": "Luxury Beachfront Villa with Infinity Pool",
+    "description": "Perched on the private cliffs of Malibu with direct beach access, this architectural masterpiece features floor-to-ceiling glass walls, an oceanfront infinity pool, a gourmet chef's kitchen, and panoramic Pacific sunset views. Experience unrivaled coastal luxury with private sound systems and outdoor fire pits.",
+    "location": "Malibu, California",
+    "price_per_night": 950,
+    "rating": 4.98,
+    "reviews_count": 142,
+    "host_name": "Elena Rostova",
+    "category": "Beachfront",
+    "images": [
+      "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Pool",
+      "Air conditioning",
+      "Dedicated workspace",
+      "Hot tub",
+      "Beachfront access",
+      "EV charger"
+    ]
+  },
+  {
+    "id": "listing-002",
+    "title": "Nordic Timber Forest Cabin & Geothermal Spa",
+    "description": "Escape deep into the pine forests of Tromsø. Handcrafted from sustainable Scandinavian timber, this cabin offers floor-to-ceiling glass stargazing ceilings to watch the Northern Lights from bed, an outdoor cedar hot tub, a wood-fired sauna, and cozy stone hearth fireplace.",
+    "location": "Tromsø, Norway",
+    "price_per_night": 380,
+    "rating": 4.95,
+    "reviews_count": 89,
+    "host_name": "Lars Halvorsen",
+    "category": "Cabins",
+    "images": [
+      "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Indoor fireplace",
+      "Sauna",
+      "Hot tub",
+      "Dedicated workspace",
+      "Mountain view"
+    ]
+  },
+  {
+    "id": "listing-003",
+    "title": "Historic Tuscan Stone Villa with Olive Grove",
+    "description": "A restored 16th-century stone estate set among 20 acres of private rolling hills and ancient olive groves in the heart of Chianti. Features vaulted brick ceilings, original terracotta floors, infinity-edge swimming pool overlooking vineyards, and outdoor pizza oven terrace.",
+    "location": "Florence, Italy",
+    "price_per_night": 720,
+    "rating": 4.93,
+    "reviews_count": 114,
+    "host_name": "Matteo Rossi",
+    "category": "Mansions",
+    "images": [
+      "https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Pool",
+      "Air conditioning",
+      "Indoor fireplace",
+      "Outdoor dining area",
+      "Vineyard tour access"
+    ]
+  },
+  {
+    "id": "listing-004",
+    "title": "Cliffside Caldera Villa with Cantilevered Pool",
+    "description": "Suspended high over the Aegean Sea in Oia, this whitewashed Cycladic sanctuary boasts an iconic heated cave pool, sun-drenched private terrace, unobstructed volcanic caldera vistas, and daily artisan Greek breakfast prepared by your private concierge.",
+    "location": "Santorini, Greece",
+    "price_per_night": 880,
+    "rating": 4.99,
+    "reviews_count": 204,
+    "host_name": "Calliope Vardalos",
+    "category": "Amazing pools",
+    "images": [
+      "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1515238152791-8216bfdf89a7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Pool",
+      "Air conditioning",
+      "Sea view",
+      "Breakfast included",
+      "Concierge service"
+    ]
+  },
+  {
+    "id": "listing-005",
+    "title": "Minimalist Kyoto Bamboo Forest Machiya",
+    "description": "An award-winning architecturally redesigned traditional Machiya townhouse bordering Arashiyama bamboo groves. Blending centuries-old cedar woodwork with sleek concrete minimalism, tatami tearoom, granite soaking onsen tub, and meditative Japanese moss rock garden.",
+    "location": "Kyoto, Japan",
+    "price_per_night": 460,
+    "rating": 4.97,
+    "reviews_count": 96,
+    "host_name": "Kenji Takahashi",
+    "category": "Design",
+    "images": [
+      "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1528164344705-475426879c0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Air conditioning",
+      "Dedicated workspace",
+      "Private garden",
+      "Soaking tub",
+      "Tea ceremony set"
+    ]
+  },
+  {
+    "id": "listing-006",
+    "title": "Modernist Lake Como Glass Estate",
+    "description": "Situated directly on the shoreline of Lake Como with private boat dock and yacht mooring. Designed by acclaimed Milanese architects, this villa boasts cantilevered living rooms over the water, Finnish sauna, solar-heated infinity lap pool, and panoramic views of Bellagio.",
+    "location": "Lake Como, Italy",
+    "price_per_night": 1150,
+    "rating": 4.96,
+    "reviews_count": 78,
+    "host_name": "Giulia Moretti",
+    "category": "Trending",
+    "images": [
+      "https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Pool",
+      "Air conditioning",
+      "Dedicated workspace",
+      "Private boat slip",
+      "Hot tub"
+    ]
+  },
+  {
+    "id": "listing-007",
+    "title": "Boutique Overwater Villa with Coral Lagoon Access",
+    "description": "Wake up to crystalline turquoise waters beneath your glass floor viewing panel. Features a private sundeck with freshwater plunge pool, direct reef ladder access, outdoor rainfall shower, and personalized island snorkeling excursions.",
+    "location": "Bora Bora, French Polynesia",
+    "price_per_night": 1250,
+    "rating": 4.99,
+    "reviews_count": 165,
+    "host_name": "Moana Teura",
+    "category": "Beachfront",
+    "images": [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Pool",
+      "Air conditioning",
+      "Waterfront access",
+      "Snorkeling gear",
+      "Breakfast included"
+    ]
+  },
+  {
+    "id": "listing-008",
+    "title": "Alpine Peak Chalet with Heated Infinity Pool",
+    "description": "A high-alpine sanctuary in Zermatt facing the majestic pyramid of the Matterhorn. Handcrafted Douglas fir ceilings, copper hanging fireplaces, an indoor-outdoor connected heated wellness pool, and ski-in/ski-out trail access.",
+    "location": "Zermatt, Switzerland",
+    "price_per_night": 890,
+    "rating": 4.94,
+    "reviews_count": 92,
+    "host_name": "Beatrix Schneider",
+    "category": "Amazing pools",
+    "images": [
+      "https://images.unsplash.com/photo-1502784444187-359ac186c5bb?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Pool",
+      "Indoor fireplace",
+      "Sauna",
+      "Ski-in/Ski-out",
+      "Dedicated workspace"
+    ]
+  },
+  {
+    "id": "listing-009",
+    "title": "Beverly Hills Contemporary Hilltop Palace",
+    "description": "Gated celebrity-grade mansion in prime Beverly Hills with dramatic city skyline-to-ocean vistas. Features a 10-car showroom garage, 15-seat Dolby Atmos screening room, zero-edge pool, private tennis court, and full smart home automation.",
+    "location": "Beverly Hills, California",
+    "price_per_night": 2200,
+    "rating": 4.92,
+    "reviews_count": 64,
+    "host_name": "Julian Montgomery",
+    "category": "Mansions",
+    "images": [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Pool",
+      "Air conditioning",
+      "Dedicated workspace",
+      "Hot tub",
+      "Home theater",
+      "Security system"
+    ]
+  },
+  {
+    "id": "listing-010",
+    "title": "Secluded Redwood A-Frame Sanctuary",
+    "description": "Tucked away under centuries-old ancient coastal redwoods along a rushing salmon creek. Features a restored 1968 mid-century A-frame architecture, vintage vinyl collection, wood-burning stove, skylight loft, and outdoor cast-iron soaking tub.",
+    "location": "Big Sur, California",
+    "price_per_night": 320,
+    "rating": 4.96,
+    "reviews_count": 183,
+    "host_name": "Chloe Sterling",
+    "category": "Cabins",
+    "images": [
+      "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Indoor fireplace",
+      "Outdoor hot tub",
+      "Dedicated workspace",
+      "Creek access"
+    ]
+  },
+  {
+    "id": "listing-011",
+    "title": "Sculptural Desert Mirrored Oasis",
+    "description": "A pioneering architectural residence with 100% mirrored glass facade reflecting Joshua Tree's boulder-strewn desert expanse. Offers zero energy footprint, 100-foot indoor lap pool, polished concrete interior, and dark-sky celestial star viewing.",
+    "location": "Joshua Tree, California",
+    "price_per_night": 790,
+    "rating": 4.91,
+    "reviews_count": 87,
+    "host_name": "Axel Vance",
+    "category": "Design",
+    "images": [
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Pool",
+      "Air conditioning",
+      "Dedicated workspace",
+      "EV charger",
+      "Telescope observatory"
+    ]
+  },
+  {
+    "id": "listing-012",
+    "title": "Lakeside Timber Lodge with Private Pier",
+    "description": "Nestled along the emerald waters of Lake Tahoe, this grand timber lodge features exposed cedar beams, radiant heated stone floors, expansive sunset deck with hot tub, and private deep-water boat pier.",
+    "location": "Lake Tahoe, Nevada",
+    "price_per_night": 620,
+    "rating": 4.89,
+    "reviews_count": 130,
+    "host_name": "Marcus Holbrook",
+    "category": "Lakefront",
+    "images": [
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Indoor fireplace",
+      "Hot tub",
+      "Lake access",
+      "Kayak and paddleboards"
+    ]
+  },
+  {
+    "id": "listing-013",
+    "title": "Provençal Lavender Hilltop Farmhouse",
+    "description": "Authentic stone country manor surrounded by endless purple lavender terraces and olive trees in Gordes. Features hand-plastered walls, limestone garden swimming pool, summer kitchen with plancha, and private wine tasting cellar.",
+    "location": "Provence, France",
+    "price_per_night": 540,
+    "rating": 4.94,
+    "reviews_count": 105,
+    "host_name": "Claire Dupont",
+    "category": "Countryside",
+    "images": [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Pool",
+      "Air conditioning",
+      "Indoor fireplace",
+      "Bicycles provided",
+      "Wine cellar"
+    ]
+  },
+  {
+    "id": "listing-014",
+    "title": "Ultra-Modern Glasshouse in the Swiss Alps",
+    "description": "Suspended over the valley in Grindelwald, this all-glass engineering marvel offers 360-degree views of the Eiger North Face. Contemporary art collection, radiant heated flooring, designer kitchen, and private mountain gondola access.",
+    "location": "Grindelwald, Switzerland",
+    "price_per_night": 980,
+    "rating": 4.97,
+    "reviews_count": 91,
+    "host_name": "Florian Meyer",
+    "category": "Design",
+    "images": [
+      "https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1502784444187-359ac186c5bb?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Air conditioning",
+      "Indoor fireplace",
+      "Sauna",
+      "Ski storage",
+      "Dedicated workspace"
+    ]
+  },
+  {
+    "id": "listing-015",
+    "title": "Iconic Sunset Beachfront Penthouse",
+    "description": "Directly overlooking Ipanema Beach with uninterrupted ocean panoramas from every room. Features a wrap-around sundeck with private plunge pool, caipirinha wet bar, Brazilian modern furnishings, and private beach concierge.",
+    "location": "Rio de Janeiro, Brazil",
+    "price_per_night": 410,
+    "rating": 4.88,
+    "reviews_count": 121,
+    "host_name": "Gabriel Santos",
+    "category": "Trending",
+    "images": [
+      "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Pool",
+      "Air conditioning",
+      "Beachfront access",
+      "Dedicated workspace",
+      "Elevator"
+    ]
+  },
+  {
+    "id": "listing-016",
+    "title": "Fairytale Cotswolds Thatched Cottage",
+    "description": "A storybook Grade II listed 17th-century cottage with honey-colored limestone facade, traditional thatched roof, and English country rose garden. Features exposed oak timber beams, inglenook fireplace, roll-top copper bathtub, and village pub nearby.",
+    "location": "Castle Combe, United Kingdom",
+    "price_per_night": 295,
+    "rating": 4.95,
+    "reviews_count": 167,
+    "host_name": "Eleanor Hawthorne",
+    "category": "Countryside",
+    "images": [
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "amenities": [
+      "Wifi",
+      "Kitchen",
+      "Free parking on premises",
+      "Indoor fireplace",
+      "Garden",
+      "Dedicated workspace",
+      "Washer and dryer"
+    ]
+  }
+]
