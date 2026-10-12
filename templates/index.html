@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LandBNB | Vacation Homes & Condo Rentals - Explore Authentic Stays</title>
+    <meta name="description" content="Find vacation rentals, cabins, beach houses, unique homes and experiences around the world on LandBNB.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                <svg width="34" height="34" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 2.5C9.648 2.5 4.5 7.648 4.5 14C4.5 19.344 8.78 24.363 14.547 28.98C15.412 29.673 16.588 29.673 17.453 28.98C23.22 24.363 27.5 19.344 27.5 14C27.5 7.648 22.352 2.5 16 2.5ZM16 18.5C13.515 18.5 11.5 16.485 11.5 14C11.5 11.515 13.515 9.5 16 9.5C18.485 9.5 20.5 11.515 20.5 14C20.5 16.485 18.485 18.5 16 18.5Z" fill="#FF385C"/>
+                </svg>
+                <span class="logo-text">LandBNB</span>
+            </a>
+
+            <div class="search-bar">
+                <button class="search-btn">Anywhere</button>
+                <span class="divider"></span>
+                <button class="search-btn">Any week</button>
+                <span class="divider"></span>
+                <button class="search-btn search-btn-guests">Add guests</button>
+                <div class="search-icon-circle">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="white">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <a href="#host" class="nav-link host-link">Become a Host</a>
+                <div class="user-menu-btn">
+                    <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                    <div class="avatar-placeholder">
+                        <svg width="18" height="18" viewBox="0 0 16 16" fill="#717171">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        <!-- Categories Bar -->
+        <section class="categories-bar" id="categoriesBar">
+            <button class="category-chip active" data-category="All">All Homes</button>
+            <button class="category-chip" data-category="Beachfront">Beachfront</button>
+            <button class="category-chip" data-category="Cabins">Cabins</button>
+            <button class="category-chip" data-category="Mansions">Mansions</button>
+            <button class="category-chip" data-category="Amazing pools">Amazing pools</button>
+            <button class="category-chip" data-category="Trending">Trending</button>
+            <button class="category-chip" data-category="Design">Design</button>
+            <button class="category-chip" data-category="Lakefront">Lakefront</button>
+            <button class="category-chip" data-category="Countryside">Countryside</button>
+        </section>
+
+        <!-- Listings Grid -->
+        <section class="listings-section">
+            <div class="section-header">
+                <h2>Featured Properties (<span id="listingsCount">{{ listings|length }}</span>)</h2>
+            </div>
+
+            <div class="listings-grid" id="listingsGrid">
+                {% for item in listings %}
+                <article class="listing-card" data-category="{{ item.category }}">
+                    <div class="card-image-wrap">
+                        <img src="{{ item.images[0] }}" alt="{{ item.title }}" loading="lazy">
+                        <span class="card-category-badge">{{ item.category }}</span>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-top-row">
+                            <h3 class="card-location">{{ item.location }}</h3>
+                            <div class="card-rating">
+                                <span class="star-icon">★</span>
+                                <span>{{ "%.2f"|format(item.rating) }}</span>
+                            </div>
+                        </div>
+                        <p class="card-title">{{ item.title }}</p>
+                        <p class="card-host">Hosted by {{ item.host_name }}</p>
+                        <div class="card-price-row">
+                            <span class="card-price">${{ item.price_per_night }}</span>
+                            <span class="card-price-period">night</span>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2026 LandBNB, Inc. All rights reserved. Privacy · Terms · Sitemap · Company Details</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
