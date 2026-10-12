@@ -198,10 +198,25 @@ def test_get_single_listing_invalid(client):
     response = client.get("/api/listings/listing-non-existent-999")
     assert response.status_code == 404
     data = response.get_json()
-
     assert data["success"] is False
     assert data["error_code"] == 404
     assert "not found" in data["message"].lower()
+
+
+def test_listing_detail_page_view_valid(client):
+    """Test GET /listings/<id> renders full HTML page with mosaic gallery and listing data."""
+    response = client.get("/listings/listing-001")
+    assert response.status_code == 200
+    assert b"Luxury Beachfront Villa with Infinity Pool" in response.data
+    assert b"mosaicImg0" in response.data
+    assert b"btnOpenLightbox" in response.data
+    assert b"btnSubmitReservation" in response.data
+
+
+def test_listing_detail_page_view_invalid(client):
+    """Test GET /listings/<id> returns 404 for unknown listing."""
+    response = client.get("/listings/listing-non-existent-999")
+    assert response.status_code == 404
 
 
 # ==============================================================================
@@ -469,6 +484,8 @@ if __name__ == "__main__":
 
             test_get_single_listing_valid(tc)
             test_get_single_listing_invalid(tc)
+            test_listing_detail_page_view_valid(tc)
+            test_listing_detail_page_view_invalid(tc)
             print("[OK] Single listing detail & enrichment suite passed.")
 
             test_get_user_profile_valid(tc)

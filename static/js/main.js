@@ -428,9 +428,9 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        // Card Click opens Modal
+        // Card Click navigates to dedicated Listing Detail Page
         card.addEventListener('click', () => {
-            openListingDetailModal(item);
+            window.location.href = `/listings/${listingId}`;
         });
 
         // Wishlist Button Handler

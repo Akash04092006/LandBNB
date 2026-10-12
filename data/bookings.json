@@ -5,7 +5,7 @@
     "user_id": "user-001",
     "check_in": "2026-11-05",
     "check_out": "2026-11-09",
-    "total_price": 3800.00
+    "total_price": 3800.0
   },
   {
     "booking_id": "booking-002",
@@ -13,7 +13,7 @@
     "user_id": "user-002",
     "check_in": "2026-12-10",
     "check_out": "2026-12-15",
-    "total_price": 1900.00
+    "total_price": 1900.0
   },
   {
     "booking_id": "booking-003",
@@ -21,7 +21,7 @@
     "user_id": "user-003",
     "check_in": "2026-10-20",
     "check_out": "2026-10-25",
-    "total_price": 4400.00
+    "total_price": 4400.0
   },
   {
     "booking_id": "booking-004",
@@ -29,7 +29,7 @@
     "user_id": "user-004",
     "check_in": "2026-11-12",
     "check_out": "2026-11-16",
-    "total_price": 1840.00
+    "total_price": 1840.0
   },
   {
     "booking_id": "booking-005",
@@ -37,7 +37,7 @@
     "user_id": "user-005",
     "check_in": "2026-12-22",
     "check_out": "2026-12-28",
-    "total_price": 5340.00
+    "total_price": 5340.0
   },
   {
     "booking_id": "booking-006",
@@ -45,7 +45,7 @@
     "user_id": "user-006",
     "check_in": "2026-11-01",
     "check_out": "2026-11-04",
-    "total_price": 960.00
+    "total_price": 960.0
   },
   {
     "booking_id": "booking-007",
@@ -53,6 +53,23 @@
     "user_id": "user-001",
     "check_in": "2026-10-15",
     "check_out": "2026-10-19",
-    "total_price": 2880.00
+    "total_price": 2880.0
+  },
+  {
+    "booking_id": "booking-997ef9a0",
+    "listing_id": "listing-001",
+    "listing_title": "Luxury Beachfront Villa with Infinity Pool",
+    "user_id": "user-001",
+    "user_name": "Sophia Chen",
+    "check_in": "2026-10-26",
+    "check_out": "2026-10-30",
+    "nights": 4,
+    "price_per_night": 950.0,
+    "accommodation_cost": 3800.0,
+    "cleaning_fee": 75.0,
+    "service_fee": 456.0,
+    "total_price": 4331.0,
+    "status": "confirmed",
+    "created_at": "2026-10-12T17:52:38.207213+00:00"
   }
 ]

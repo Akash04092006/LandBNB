@@ -178,6 +178,38 @@ def home():
         }), 200
 
 
+@app.route("/listings/<listing_id>")
+def listing_detail_page(listing_id: str):
+    """Full-page presentation view for an individual property listing."""
+    listings = load_json_file("listings.json")
+    if not isinstance(listings, list):
+        listings = []
+
+    target_listing = next((l for l in listings if str(l.get("id")) == str(listing_id)), None)
+    if not target_listing:
+        # Fallback to home page or 404
+        return render_template("index.html", error=f"Listing {listing_id} not found"), 404
+
+    all_reviews = load_json_file("reviews.json")
+    matching_reviews = [r for r in all_reviews if str(r.get("listing_id")) == str(listing_id)] if isinstance(all_reviews, list) else []
+
+    all_users = load_json_file("users.json")
+    host_name = target_listing.get("host_name", "")
+    host_user = next(
+        (u for u in all_users if str(u.get("name", "")).strip().lower() == host_name.strip().lower()),
+        None
+    ) if isinstance(all_users, list) else None
+
+    return render_template(
+        "listing_detail.html",
+        listing=target_listing,
+        reviews=matching_reviews,
+        host=host_user,
+        listing_id=listing_id
+    )
+
+
+
 # ==============================================================================
 # REST API Endpoints
 # ==============================================================================
