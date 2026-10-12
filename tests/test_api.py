@@ -425,6 +425,61 @@ def test_create_booking_validation_errors(client):
     assert res6.status_code == 404
 
 
+def test_cancel_booking_success(client, isolate_test_data):
+    """Test DELETE /api/bookings/<id> successfully cancels reservation and updates storage."""
+    target_id = "booking-001"
+    response = client.delete(f"/api/bookings/{target_id}")
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["success"] is True
+    assert "successfully cancelled" in data["message"].lower()
+
+    # Verify storage persistence in sandbox bookings.json
+    bookings_file = isolate_test_data / "bookings.json"
+    with open(bookings_file, "r", encoding="utf-8") as f:
+        persisted = json.load(f)
+    remaining_ids = [b["booking_id"] for b in persisted]
+    assert target_id not in remaining_ids
+
+
+def test_cancel_booking_not_found(client):
+    """Test DELETE /api/bookings/<id> with non-existent ID returns 404."""
+    response = client.delete("/api/bookings/booking-non-existent-999")
+    assert response.status_code == 404
+    data = response.get_json()
+    assert data["success"] is False
+    assert data["error_code"] == 404
+
+
+def test_get_user_bookings(client):
+    """Test GET /api/users/<id>/bookings retrieves user's reservations."""
+    response = client.get("/api/users/user-001/bookings")
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["success"] is True
+    assert "bookings" in data
+    assert isinstance(data["bookings"], list)
+
+
+def test_checkout_page_view(client):
+    """Test GET /checkout renders payment summary view."""
+    response = client.get("/checkout?listing_id=listing-001&check_in=2026-11-01&check_out=2026-11-05&guests=2")
+    assert response.status_code == 200
+    assert b"Confirm and pay" in response.data
+    assert b"Price details" in response.data
+    assert b"inputCardNumber" in response.data
+
+
+def test_profile_page_view(client):
+    """Test GET /profile renders user dashboard with trips and wishlists."""
+    response = client.get("/profile/user-001")
+    assert response.status_code == 200
+    assert b"Sophia Chen" in response.data
+    assert b"My Trips" in response.data
+    assert b"Saved Wishlists" in response.data
+
+
+
 # ==============================================================================
 # 6. Global Error Framework Tests
 # ==============================================================================
@@ -496,7 +551,12 @@ if __name__ == "__main__":
 
             test_create_booking_success_and_arithmetic(tc, sandbox)
             test_create_booking_validation_errors(tc)
-            print("[OK] Booking creation & arithmetic suite passed.")
+            test_cancel_booking_success(tc, sandbox)
+            test_cancel_booking_not_found(tc)
+            test_get_user_bookings(tc)
+            test_checkout_page_view(tc)
+            test_profile_page_view(tc)
+            print("[OK] Booking creation, cancellation, and checkout/profile suite passed.")
 
             test_global_404_error_handling(tc)
             test_global_405_error_handling(tc)

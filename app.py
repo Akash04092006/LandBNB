@@ -9,7 +9,7 @@ import json
 import logging
 import os
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -207,6 +207,127 @@ def listing_detail_page(listing_id: str):
         host=host_user,
         listing_id=listing_id
     )
+
+
+@app.route("/checkout")
+def checkout_page():
+    """Dedicated booking checkout and payment summary view."""
+    listing_id = request.args.get("listing_id", "listing-001")
+    listings = load_json_file("listings.json")
+    if not isinstance(listings, list):
+        listings = []
+
+    target_listing = next((l for l in listings if str(l.get("id")) == str(listing_id)), None)
+    if not target_listing and listings:
+        target_listing = listings[0]
+    elif not target_listing:
+        return render_template("index.html", error="No listing selected"), 404
+
+    # Extract or calculate dates
+    check_in = request.args.get("check_in", "")
+    check_out = request.args.get("check_out", "")
+    guests = request.args.get("guests", "1")
+
+    today = datetime.now(timezone.utc).date()
+    if not check_in:
+        check_in = (today + timedelta(days=14)).isoformat()
+    if not check_out:
+        check_out = (today + timedelta(days=18)).isoformat()
+
+    try:
+        d_in = datetime.strptime(check_in, "%Y-%m-%d").date()
+        d_out = datetime.strptime(check_out, "%Y-%m-%d").date()
+        if d_out <= d_in:
+            d_out = d_in + timedelta(days=4)
+            check_out = d_out.isoformat()
+        nights = (d_out - d_in).days
+    except ValueError:
+        nights = 4
+        check_in = (today + timedelta(days=14)).isoformat()
+        check_out = (today + timedelta(days=18)).isoformat()
+
+    price_per_night = float(target_listing.get("price_per_night", 100))
+    accommodation_cost = round(nights * price_per_night, 2)
+    cleaning_fee = round(STANDARD_CLEANING_FEE, 2)
+    service_fee = round(accommodation_cost * STANDARD_SERVICE_FEE_RATE, 2)
+    total_price = round(accommodation_cost + cleaning_fee + service_fee, 2)
+
+    return render_template(
+        "checkout.html",
+        listing=target_listing,
+        check_in=check_in,
+        check_out=check_out,
+        guests=guests,
+        nights=nights,
+        price_per_night=price_per_night,
+        accommodation_cost=accommodation_cost,
+        cleaning_fee=cleaning_fee,
+        service_fee=service_fee,
+        total_price=total_price
+    )
+
+
+@app.route("/profile")
+@app.route("/profile/<user_id>")
+def profile_page(user_id: str = "user-001"):
+    """User profile dashboard displaying trips, saved wishlists, and settings."""
+    users = load_json_file("users.json")
+    if not isinstance(users, list):
+        users = []
+
+    target_user = next((u for u in users if str(u.get("user_id")) == str(user_id)), None)
+    if not target_user and users:
+        target_user = users[0]
+    elif not target_user:
+        return render_template("index.html", error="User not found"), 404
+
+    # Fetch user bookings and listing index
+    all_bookings = load_json_file("bookings.json")
+    all_listings = load_json_file("listings.json")
+    listings_by_id = {str(l.get("id")): l for l in all_listings} if isinstance(all_listings, list) else {}
+
+    user_bookings = []
+    if isinstance(all_bookings, list):
+        for b in all_bookings:
+            if str(b.get("user_id")) == str(target_user.get("user_id")):
+                b_copy = dict(b)
+                listing_obj = listings_by_id.get(str(b.get("listing_id")), {})
+                if not b_copy.get("listing_title"):
+                    b_copy["listing_title"] = listing_obj.get("title", b.get("listing_id"))
+                if not b_copy.get("listing_image"):
+                    images = listing_obj.get("images", [])
+                    b_copy["listing_image"] = images[0] if (isinstance(images, list) and len(images) > 0) else listing_obj.get("primary_image", "")
+                if not b_copy.get("listing_location"):
+                    loc = listing_obj.get("location", "")
+                    if isinstance(loc, dict):
+                        b_copy["listing_location"] = f"{loc.get('city', '')}, {loc.get('state', '')}".strip(", ")
+                    else:
+                        b_copy["listing_location"] = str(loc)
+                if not b_copy.get("nights") and b.get("check_in") and b.get("check_out"):
+                    try:
+                        d1 = datetime.strptime(b["check_in"], "%Y-%m-%d")
+                        d2 = datetime.strptime(b["check_out"], "%Y-%m-%d")
+                        b_copy["nights"] = (d2 - d1).days
+                    except Exception:
+                        pass
+                user_bookings.append(b_copy)
+
+    wishlist_listings = [
+        listings_by_id[str(item_id)]
+        for item_id in target_user.get("wishlist", [])
+        if str(item_id) in listings_by_id
+    ]
+
+    active_tab = request.args.get("tab", "trips")
+
+    return render_template(
+        "profile.html",
+        user=target_user,
+        bookings=user_bookings,
+        wishlist_listings=wishlist_listings,
+        active_tab=active_tab
+    )
+
 
 
 
@@ -632,6 +753,55 @@ def get_all_reviews():
         "count": len(reviews) if isinstance(reviews, list) else 0,
         "reviews": reviews
     }), 200
+
+
+@app.route("/api/bookings/<booking_id>", methods=["DELETE"])
+def cancel_booking(booking_id: str):
+    """DELETE /api/bookings/<booking_id>
+
+    Cancel / remove an existing booking record.
+    Persists updated state back to bookings.json.
+    """
+    bookings = load_json_file("bookings.json")
+    if not isinstance(bookings, list):
+        bookings = []
+
+    target_booking = next((b for b in bookings if str(b.get("booking_id")) == str(booking_id)), None)
+    if not target_booking:
+        return make_error_response(f"Booking with ID '{booking_id}' not found", 404)
+
+    # Remove the booking from active bookings
+    updated_bookings = [b for b in bookings if str(b.get("booking_id")) != str(booking_id)]
+    save_success = save_json_file("bookings.json", updated_bookings)
+    if not save_success:
+        return make_error_response("Failed to update bookings storage", 500)
+
+    logger.info("Successfully cancelled booking '%s'", booking_id)
+    return jsonify({
+        "success": True,
+        "message": f"Booking '{booking_id}' successfully cancelled.",
+        "booking_id": booking_id
+    }), 200
+
+
+@app.route("/api/users/<user_id>/bookings", methods=["GET"])
+def get_user_bookings(user_id: str):
+    """GET /api/users/<user_id>/bookings
+
+    Retrieve all reservations booked by a specific user.
+    """
+    bookings = load_json_file("bookings.json")
+    if not isinstance(bookings, list):
+        bookings = []
+
+    user_bookings = [b for b in bookings if str(b.get("user_id")) == str(user_id)]
+    return jsonify({
+        "success": True,
+        "user_id": user_id,
+        "count": len(user_bookings),
+        "bookings": user_bookings
+    }), 200
+
 
 
 # ==============================================================================

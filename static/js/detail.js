@@ -298,50 +298,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =========================================================================
-    // Reservation Checkout Flow (POST /api/bookings)
+    // Reservation Checkout Flow (Navigate to /checkout)
     // =========================================================================
-    async function submitReservation() {
-        btnSubmitReservation.disabled = true;
-        btnSubmitReservation.textContent = 'Securing your dates...';
-
-        try {
-            const payload = {
-                listing_id: listingId,
-                user_id: activeUserId,
-                check_in: detailCheckIn.value,
-                check_out: detailCheckOut.value
-            };
-
-            const res = await fetch('/api/bookings', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            const data = await res.json();
-
-            if (data.success && data.booking) {
-                const b = data.booking;
-                detailConfirmationBox.classList.remove('hidden');
-                detailConfirmationDetails.innerHTML = `
-                    <div class="font-bold text-xs text-emerald-900 mb-0.5">Booking ID: #${b.booking_id}</div>
-                    <div>Stay: ${b.check_in} to ${b.check_out} (${b.nights} nights)</div>
-                    <div class="font-extrabold text-sm text-emerald-900 mt-1">Total Paid: $${b.total_price.toFixed(2)}</div>
-                `;
-                btnSubmitReservation.textContent = 'Reserved!';
-                btnSubmitReservation.classList.replace('bg-brand', 'bg-emerald-600');
-                showToast('🎉 Reservation confirmed successfully!');
-            } else {
-                alert(`Reservation error: ${data.message || 'Unable to complete reservation.'}`);
-                btnSubmitReservation.disabled = false;
-                btnSubmitReservation.textContent = 'Reserve';
-            }
-        } catch (err) {
-            console.error('Reservation error:', err);
-            alert('An unexpected error occurred while processing reservation.');
-            btnSubmitReservation.disabled = false;
-            btnSubmitReservation.textContent = 'Reserve';
-        }
+    function submitReservation() {
+        const checkIn = detailCheckIn.value;
+        const checkOut = detailCheckOut.value;
+        const guests = state.adults + state.children;
+        window.location.href = `/checkout?listing_id=${listingId}&check_in=${checkIn}&check_out=${checkOut}&guests=${guests}`;
     }
 
     // =========================================================================

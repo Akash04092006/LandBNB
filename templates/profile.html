@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.name }} · Profile & Trips Dashboard - LandBNB</title>
+    <meta name="description" content="Manage your LandBNB trips, saved wishlists, and account preferences.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏖️</text></svg>">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#FF385C',
+                            hover: '#E00B41',
+                            light: '#FFF1F2',
+                        },
+                        airbnb: {
+                            dark: '#222222',
+                            gray: '#717171',
+                            border: '#DDDDDD',
+                            'border-light': '#EBEBEB',
+                            light: '#F7F7F7',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-white text-airbnb-dark font-sans antialiased min-h-screen flex flex-col"
+      data-user-id="{{ user.user_id }}"
+      data-active-tab="{{ active_tab }}">
+
+    <!-- ==============================================================================
+         STICKY HEADER NAVIGATION
+         ============================================================================== -->
+    <header class="border-b border-airbnb-border-light bg-white sticky top-0 z-30 shadow-sm">
+        <div class="max-w-[1280px] mx-auto px-4 sm:px-8 py-4 flex items-center justify-between gap-4">
+            <a href="/" class="flex items-center gap-2 text-brand font-extrabold text-xl group">
+                <svg class="w-8 h-8 transition-transform group-hover:scale-105" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 2.5C9.648 2.5 4.5 7.648 4.5 14C4.5 19.344 8.78 24.363 14.547 28.98C15.412 29.673 16.588 29.673 17.453 28.98C23.22 24.363 27.5 19.344 27.5 14C27.5 7.648 22.352 2.5 16 2.5ZM16 18.5C13.515 18.5 11.5 16.485 11.5 14C11.5 11.515 13.515 9.5 16 9.5C18.485 9.5 20.5 11.515 20.5 14C20.5 16.485 18.485 18.5 16 18.5Z" fill="#FF385C"/>
+                </svg>
+                <span class="text-2xl font-bold tracking-tighter text-brand hidden sm:inline">LandBNB</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <div class="flex items-center gap-3">
+                <a href="/" class="text-xs font-bold text-airbnb-dark hover:bg-airbnb-light px-3.5 py-2 rounded-full transition-colors">
+                    Explore Stays
+                </a>
+                <a href="#host" class="hidden sm:inline-block text-xs font-bold text-airbnb-dark hover:bg-airbnb-light px-3.5 py-2 rounded-full transition-colors">
+                    LandBNB your home
+                </a>
+                <div class="flex items-center gap-2 border border-airbnb-border rounded-full py-1.5 px-3">
+                    <img src="{{ user.profile_image }}" alt="{{ user.name }}" class="w-6 h-6 rounded-full object-cover">
+                    <span class="text-xs font-bold text-airbnb-dark">{{ user.name.split()[0] }}</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==============================================================================
+         PROFILE & TRIPS DASHBOARD CONTAINER
+         ============================================================================== -->
+    <main class="max-w-[1280px] mx-auto px-4 sm:px-8 py-8 flex-1 w-full">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- LEFT COLUMN: Profile Identity Card & Badges (4 Cols) -->
+            <div class="lg:col-span-4">
+                <div class="bg-white border border-airbnb-border rounded-3xl p-6 sm:p-8 airbnb-shadow-md space-y-6">
+                    
+                    <!-- Avatar & Name -->
+                    <div class="flex flex-col items-center text-center">
+                        <div class="relative w-28 h-28 mb-4">
+                            <img src="{{ user.profile_image }}" alt="{{ user.name }}" class="w-full h-full rounded-full object-cover border-4 border-white shadow-lg">
+                            <span class="absolute bottom-1 right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold" title="Identity Verified">
+                                ✓
+                            </span>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl font-extrabold text-airbnb-dark tracking-tight">{{ user.name }}</h1>
+                        <p class="text-xs text-airbnb-gray mt-0.5">Guest · Member since 2024</p>
+                        <div class="mt-2 inline-flex items-center gap-1.5 px-3 py-1 bg-brand-light text-brand text-xs font-bold rounded-full">
+                            <span>⭐</span>
+                            <span>Superguest Status</span>
+                        </div>
+                    </div>
+
+                    <div class="h-[1px] bg-airbnb-border-light"></div>
+
+                    <!-- Verified Identity Badges -->
+                    <div>
+                        <h3 class="text-xs uppercase font-extrabold text-airbnb-dark tracking-wider mb-3">Sophia's confirmed details</h3>
+                        <div class="space-y-2.5 text-xs text-airbnb-gray">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-emerald-600 font-bold">✓</span>
+                                <span class="text-airbnb-dark font-medium">Government ID verified</span>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-emerald-600 font-bold">✓</span>
+                                <span class="text-airbnb-dark font-medium">Email address confirmed</span>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-emerald-600 font-bold">✓</span>
+                                <span class="text-airbnb-dark font-medium">Phone number confirmed</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="h-[1px] bg-airbnb-border-light"></div>
+
+                    <!-- Stats Counter Card -->
+                    <div class="grid grid-cols-2 gap-3 text-center">
+                        <div class="p-3 rounded-2xl bg-airbnb-light">
+                            <div class="text-lg font-extrabold text-airbnb-dark" id="profileTripsCountBadge">{{ bookings|length }}</div>
+                            <div class="text-[11px] text-airbnb-gray font-semibold">Trips Booked</div>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-airbnb-light">
+                            <div class="text-lg font-extrabold text-brand" id="profileWishlistCountBadge">{{ wishlist_listings|length }}</div>
+                            <div class="text-[11px] text-airbnb-gray font-semibold">Saved Stays</div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Support Callout -->
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-airbnb-border-light text-xs text-airbnb-gray space-y-1">
+                        <div class="font-bold text-airbnb-dark">Need assistance?</div>
+                        <p class="text-[11px]">LandBNB 24/7 guest concierge is ready to assist with any reservation or cancellation inquiries.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Interactive Tabs & Content Area (8 Cols) -->
+            <div class="lg:col-span-8 space-y-6">
+                
+                <!-- Interactive Tabs Navigation -->
+                <div class="flex border-b border-airbnb-border gap-2 sm:gap-6 overflow-x-auto no-scrollbar">
+                    <button type="button" 
+                            id="tabBtnTrips" 
+                            class="tab-btn pb-3 px-2 font-bold text-sm border-b-2 border-airbnb-dark text-airbnb-dark transition-all flex items-center gap-2 flex-shrink-0" 
+                            data-target="tabContentTrips">
+                        <span>My Trips</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] bg-airbnb-dark text-white font-bold" id="badgeTripsTab">{{ bookings|length }}</span>
+                    </button>
+
+                    <button type="button" 
+                            id="tabBtnWishlists" 
+                            class="tab-btn pb-3 px-2 font-bold text-sm border-b-2 border-transparent text-airbnb-gray hover:text-airbnb-dark transition-all flex items-center gap-2 flex-shrink-0" 
+                            data-target="tabContentWishlists">
+                        <span>Saved Wishlists</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-airbnb-dark font-bold" id="badgeWishlistTab">{{ wishlist_listings|length }}</span>
+                    </button>
+
+                    <button type="button" 
+                            id="tabBtnAccount" 
+                            class="tab-btn pb-3 px-2 font-bold text-sm border-b-2 border-transparent text-airbnb-gray hover:text-airbnb-dark transition-all flex items-center gap-2 flex-shrink-0" 
+                            data-target="tabContentAccount">
+                        <span>Account Settings</span>
+                    </button>
+                </div>
+
+                <!-- ==================================================================
+                     TAB 1: MY TRIPS & BOOKINGS LIST
+                     ================================================================== -->
+                <div id="tabContentTrips" class="tab-content space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-airbnb-dark">Confirmed Reservations</h2>
+                        <span class="text-xs text-airbnb-gray">Sorted by latest reservation</span>
+                    </div>
+
+                    <div id="tripsListContainer" class="space-y-4">
+                        {% for b in bookings %}
+                        <div class="booking-card bg-white border border-airbnb-border rounded-3xl p-5 airbnb-shadow-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row justify-between gap-5"
+                             data-booking-id="{{ b.booking_id }}">
+                            
+                            <div class="flex gap-4">
+                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-100 flex-shrink-0 overflow-hidden border border-airbnb-border flex items-center justify-center relative">
+                                    {% if b.listing_image %}
+                                    <img src="{{ b.listing_image }}" alt="{{ b.listing_title }}" class="w-full h-full object-cover">
+                                    {% else %}
+                                    <span class="text-3xl">🏡</span>
+                                    {% endif %}
+                                </div>
+                                <div class="flex flex-col justify-center min-w-0">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-full">
+                                            Confirmed
+                                        </span>
+                                        <span class="text-[11px] font-mono text-airbnb-gray">#{{ b.booking_id }}</span>
+                                    </div>
+                                    <h3 class="text-sm sm:text-base font-bold text-airbnb-dark truncate">{{ b.listing_title or b.listing_id }}</h3>
+                                    {% if b.listing_location %}
+                                    <div class="text-[11px] text-airbnb-gray font-medium">{{ b.listing_location }}</div>
+                                    {% endif %}
+                                    <div class="text-xs text-airbnb-gray mt-0.5">
+                                        📅 {{ b.check_in }} to {{ b.check_out }} ({{ b.nights or '—' }} nights)
+                                    </div>
+                                    <div class="text-xs font-extrabold text-brand mt-1.5">
+                                        Total Paid: ${{ "%.2f"|format(b.total_price) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="flex sm:flex-col justify-end sm:justify-center items-end gap-2 flex-shrink-0">
+                                <a href="/listings/{{ b.listing_id }}" class="px-3.5 py-1.5 text-xs font-bold border border-airbnb-border rounded-full hover:border-airbnb-dark transition-colors">
+                                    View Stay
+                                </a>
+                                <button type="button" 
+                                        class="btn-cancel-booking px-3.5 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-full transition-colors border border-transparent hover:border-red-200" 
+                                        data-booking-id="{{ b.booking_id }}">
+                                    Cancel Booking
+                                </button>
+                            </div>
+
+                        </div>
+                        {% else %}
+                        <div id="emptyTripsState" class="text-center py-16 bg-airbnb-light/50 rounded-3xl border border-airbnb-border-light">
+                            <div class="text-4xl mb-3">✈️</div>
+                            <h3 class="font-bold text-sm text-airbnb-dark mb-1">No trips booked... yet!</h3>
+                            <p class="text-xs text-airbnb-gray max-w-sm mx-auto mb-4">Time to dust off your bags and start planning your next great adventure.</p>
+                            <a href="/" class="px-5 py-2.5 bg-brand hover:bg-brand-hover text-white text-xs font-bold rounded-full transition-colors inline-block shadow">
+                                Start searching
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- ==================================================================
+                     TAB 2: SAVED WISHLISTS MANAGEMENT GRID
+                     ================================================================== -->
+                <div id="tabContentWishlists" class="tab-content hidden space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-airbnb-dark">Your Saved Stays (<span id="wishlistCountHeader">{{ wishlist_listings|length }}</span>)</h2>
+                        <span class="text-xs text-airbnb-gray">Saved to your private collection</span>
+                    </div>
+
+                    <div id="wishlistGridContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        {% for item in wishlist_listings %}
+                        <div class="wishlist-item-card bg-white border border-airbnb-border rounded-3xl overflow-hidden airbnb-shadow-sm hover:shadow-md transition-all group flex flex-col"
+                             data-listing-id="{{ item.id }}">
+                            
+                            <!-- Thumbnail with Heart Button -->
+                            <div class="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
+                                <img src="{{ item.images[0] if item.images else '' }}" alt="{{ item.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-[10px] font-bold text-airbnb-dark px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                                    {{ item.category }}
+                                </span>
+                                <!-- Remove Heart Button -->
+                                <button type="button" 
+                                        class="btn-remove-wishlist absolute top-3 right-3 p-1.5 rounded-full hover:scale-110 active:scale-95 transition-transform" 
+                                        data-listing-id="{{ item.id }}" 
+                                        title="Remove from wishlist">
+                                    <svg class="w-6 h-6 text-brand drop-shadow-md" viewBox="0 0 24 24" fill="#FF385C" stroke="#FF385C" stroke-width="2">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Card Info -->
+                            <div class="p-4 flex flex-col justify-between flex-1 text-xs">
+                                <div>
+                                    <div class="flex justify-between items-baseline font-bold text-airbnb-dark mb-1">
+                                        <span class="truncate pr-2">{{ item.location }}</span>
+                                        <span class="flex items-center gap-1 flex-shrink-0">
+                                            <span class="text-brand">★</span>
+                                            <span>{{ "%.2f"|format(item.rating) }}</span>
+                                        </span>
+                                    </div>
+                                    <h4 class="text-airbnb-gray truncate text-[11px] mb-2">{{ item.title }}</h4>
+                                </div>
+                                
+                                <div class="flex items-center justify-between pt-2 border-t border-airbnb-border-light">
+                                    <div>
+                                        <span class="font-extrabold text-sm text-airbnb-dark">${{ item.price_per_night }}</span>
+                                        <span class="text-airbnb-gray text-[11px]"> night</span>
+                                    </div>
+                                    <a href="/listings/{{ item.id }}" class="px-3 py-1 bg-airbnb-dark hover:bg-black text-white font-bold rounded-full transition-colors text-[11px]">
+                                        Book Now
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% else %}
+                        <div id="emptyWishlistState" class="col-span-full text-center py-16 bg-airbnb-light/50 rounded-3xl border border-airbnb-border-light">
+                            <div class="text-4xl mb-3">❤️</div>
+                            <h3 class="font-bold text-sm text-airbnb-dark mb-1">Your wishlist is empty</h3>
+                            <p class="text-xs text-airbnb-gray max-w-sm mx-auto mb-4">Tap the heart on any property listing to save your favorite vacation stays here.</p>
+                            <a href="/" class="px-5 py-2.5 bg-brand hover:bg-brand-hover text-white text-xs font-bold rounded-full transition-colors inline-block shadow">
+                                Explore stays
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- ==================================================================
+                     TAB 3: ACCOUNT SETTINGS
+                     ================================================================== -->
+                <div id="tabContentAccount" class="tab-content hidden space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-airbnb-dark">Account Preferences</h2>
+                        <span class="text-xs text-airbnb-gray">Manage profile information</span>
+                    </div>
+
+                    <div class="bg-white border border-airbnb-border rounded-3xl p-6 airbnb-shadow-sm space-y-6 text-xs">
+                        <!-- Personal Info -->
+                        <div>
+                            <h3 class="font-bold text-sm text-airbnb-dark mb-3">Personal Information</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="border border-airbnb-border rounded-2xl p-3">
+                                    <label class="text-[10px] uppercase font-bold text-airbnb-gray block">Legal Name</label>
+                                    <input type="text" id="accFullName" value="{{ user.name }}" class="w-full font-semibold focus:outline-none bg-transparent">
+                                </div>
+                                <div class="border border-airbnb-border rounded-2xl p-3">
+                                    <label class="text-[10px] uppercase font-bold text-airbnb-gray block">Email Address</label>
+                                    <input type="email" id="accEmail" value="{{ user.email }}" class="w-full font-semibold focus:outline-none bg-transparent">
+                                </div>
+                                <div class="border border-airbnb-border rounded-2xl p-3">
+                                    <label class="text-[10px] uppercase font-bold text-airbnb-gray block">Phone Number</label>
+                                    <input type="text" id="accPhone" value="+1 (555) 234-5678" class="w-full font-semibold focus:outline-none bg-transparent">
+                                </div>
+                                <div class="border border-airbnb-border rounded-2xl p-3">
+                                    <label class="text-[10px] uppercase font-bold text-airbnb-gray block">Preferred Currency</label>
+                                    <select class="w-full font-semibold focus:outline-none bg-transparent">
+                                        <option selected>USD ($)</option>
+                                        <option>EUR (€)</option>
+                                        <option>INR (₹)</option>
+                                        <option>GBP (£)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="h-[1px] bg-airbnb-border-light"></div>
+
+                        <!-- Notification Settings -->
+                        <div>
+                            <h3 class="font-bold text-sm text-airbnb-dark mb-3">Notifications</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" checked class="w-4 h-4 rounded accent-brand">
+                                    <div>
+                                        <div class="font-bold text-airbnb-dark">Booking updates & receipts</div>
+                                        <div class="text-airbnb-gray text-[11px]">Receive confirmation emails and real-time stay notifications.</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" checked class="w-4 h-4 rounded accent-brand">
+                                    <div>
+                                        <div class="font-bold text-airbnb-dark">Price drop alerts</div>
+                                        <div class="text-airbnb-gray text-[11px]">Get notified when items in your wishlist go on discount.</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="button" id="btnSaveAccountSettings" class="px-6 py-2.5 bg-brand hover:bg-brand-hover text-white font-bold rounded-full transition-colors shadow">
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 bg-airbnb-dark text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none z-50 flex items-center gap-2">
+        <span>✨</span>
+        <span id="toastMessage">Changes saved</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-airbnb-border-light bg-airbnb-light mt-16">
+        <div class="max-w-[1280px] mx-auto px-4 sm:px-8 py-6 text-xs text-airbnb-gray flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>&copy; 2026 LandBNB, Inc. All rights reserved. · Privacy · Terms · Sitemap</div>
+            <div class="font-semibold text-airbnb-dark">English (US) · USD ($)</div>
+        </div>
+    </footer>
+
+    <!-- Client-side Script -->
+    <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+</body>
+</html>
