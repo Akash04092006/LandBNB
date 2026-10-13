@@ -223,6 +223,22 @@ def checkout_page():
     elif not target_listing:
         return render_template("index.html", error="No listing selected"), 404
 
+    # Resolve active user and host
+    all_users = load_json_file("users.json")
+    if not isinstance(all_users, list):
+        all_users = []
+
+    user_id = request.args.get("user_id", "user-001")
+    target_user = next((u for u in all_users if str(u.get("user_id")) == str(user_id)), None)
+    if not target_user and all_users:
+        target_user = all_users[0]
+
+    host_name = target_listing.get("host_name", "")
+    host_user = next(
+        (u for u in all_users if str(u.get("name", "")).strip().lower() == host_name.strip().lower()),
+        None
+    )
+
     # Extract or calculate dates
     check_in = request.args.get("check_in", "")
     check_out = request.args.get("check_out", "")
@@ -250,11 +266,14 @@ def checkout_page():
     accommodation_cost = round(nights * price_per_night, 2)
     cleaning_fee = round(STANDARD_CLEANING_FEE, 2)
     service_fee = round(accommodation_cost * STANDARD_SERVICE_FEE_RATE, 2)
+    total_taxes = 0.00
     total_price = round(accommodation_cost + cleaning_fee + service_fee, 2)
 
     return render_template(
         "checkout.html",
         listing=target_listing,
+        user=target_user,
+        host=host_user,
         check_in=check_in,
         check_out=check_out,
         guests=guests,
@@ -263,6 +282,7 @@ def checkout_page():
         accommodation_cost=accommodation_cost,
         cleaning_fee=cleaning_fee,
         service_fee=service_fee,
+        total_taxes=total_taxes,
         total_price=total_price
     )
 
@@ -311,6 +331,9 @@ def profile_page(user_id: str = "user-001"):
                     except Exception:
                         pass
                 user_bookings.append(b_copy)
+
+    # Sort bookings with latest reservations first
+    user_bookings.reverse()
 
     wishlist_listings = [
         listings_by_id[str(item_id)]
@@ -709,14 +732,22 @@ def create_booking():
 
     # Generate unique booking receipt
     booking_id = f"booking-{uuid.uuid4().hex[:8]}"
+    listing_images = target_listing.get("images", [])
+    primary_img = listing_images[0] if (isinstance(listing_images, list) and len(listing_images) > 0) else target_listing.get("primary_image", "")
+    loc_val = target_listing.get("location", "")
+    loc_str = f"{loc_val.get('city', '')}, {loc_val.get('state', '')}".strip(", ") if isinstance(loc_val, dict) else str(loc_val)
+
     booking_record = {
         "booking_id": booking_id,
         "listing_id": target_listing["id"],
         "listing_title": target_listing.get("title", ""),
+        "listing_image": primary_img,
+        "listing_location": loc_str,
         "user_id": target_user["user_id"],
         "user_name": target_user.get("name", ""),
         "check_in": check_in_str,
         "check_out": check_out_str,
+        "guests": int(payload.get("guests", 1)),
         "nights": nights,
         "price_per_night": price_per_night,
         "accommodation_cost": accommodation_cost,

@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupBookingCancellations();
         setupWishlistRemovals();
         setupAccountSettings();
+        setupContactHostModal();
         activateInitialTab(initialActiveTab);
     }
 
@@ -49,6 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', () => {
                 const targetId = btn.getAttribute('data-target');
                 switchTab(btn, targetId);
+
+                // Update URL parameter without reload
+                const tabParam = targetId === 'tabContentWishlists' ? 'wishlists' : (targetId === 'tabContentAccount' ? 'account' : 'trips');
+                if (window.history && window.history.replaceState) {
+                    const newUrl = `${window.location.pathname}?tab=${tabParam}`;
+                    window.history.replaceState(null, '', newUrl);
+                }
             });
         });
     }
@@ -84,6 +92,63 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const btn = document.getElementById('tabBtnTrips');
             if (btn) btn.click();
+        }
+    }
+
+    // =========================================================================
+    // Contact Host Modal Interaction
+    // =========================================================================
+    function setupContactHostModal() {
+        const modal = document.getElementById('profileContactHostModal');
+        const modalTitle = document.getElementById('modalHostTitle');
+        const modalSubtitle = document.getElementById('modalHostSubtitle');
+        const txtMsg = document.getElementById('profileHostMessageTxt');
+        const successMsg = document.getElementById('profileHostMsgSuccess');
+        const btnClose = document.getElementById('btnCloseProfileHostModal');
+        const btnCancel = document.getElementById('btnCancelProfileHostModal');
+        const btnSend = document.getElementById('btnSendProfileHostModal');
+
+        if (!modal) return;
+
+        document.querySelectorAll('.btn-contact-host').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const listingTitle = btn.getAttribute('data-listing-title') || 'Stay Reservation';
+                const bookingId = btn.getAttribute('data-booking-id') || '';
+                if (modalTitle) modalTitle.textContent = `Message Host · ${listingTitle}`;
+                if (modalSubtitle) modalSubtitle.textContent = `Reservation #${bookingId}`;
+                if (txtMsg) txtMsg.value = '';
+                if (successMsg) successMsg.classList.add('hidden');
+                modal.classList.remove('hidden');
+                if (txtMsg) txtMsg.focus();
+            });
+        });
+
+        if (btnClose) btnClose.addEventListener('click', () => modal.classList.add('hidden'));
+        if (btnCancel) btnCancel.addEventListener('click', () => modal.classList.add('hidden'));
+
+        if (btnSend) {
+            btnSend.addEventListener('click', () => {
+                const content = txtMsg ? txtMsg.value.trim() : '';
+                if (!content) {
+                    showToast('Please type a message before sending.');
+                    return;
+                }
+                btnSend.disabled = true;
+                btnSend.textContent = 'Sending...';
+
+                setTimeout(() => {
+                    if (successMsg) successMsg.classList.remove('hidden');
+                    btnSend.disabled = false;
+                    btnSend.textContent = 'Sent!';
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                        if (successMsg) successMsg.classList.add('hidden');
+                        btnSend.textContent = 'Send Message';
+                        showToast('Message sent to host.');
+                    }, 1200);
+                }, 500);
+            });
         }
     }
 

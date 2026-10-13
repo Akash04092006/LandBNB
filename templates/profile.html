@@ -105,7 +105,7 @@
 
                     <!-- Verified Identity Badges -->
                     <div>
-                        <h3 class="text-xs uppercase font-extrabold text-airbnb-dark tracking-wider mb-3">Sophia's confirmed details</h3>
+                        <h3 class="text-xs uppercase font-extrabold text-airbnb-dark tracking-wider mb-3">{{ user.name.split()[0] }}'s confirmed details</h3>
                         <div class="space-y-2.5 text-xs text-airbnb-gray">
                             <div class="flex items-center gap-2.5">
                                 <span class="text-emerald-600 font-bold">✓</span>
@@ -118,6 +118,27 @@
                             <div class="flex items-center gap-2.5">
                                 <span class="text-emerald-600 font-bold">✓</span>
                                 <span class="text-airbnb-dark font-medium">Phone number confirmed</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="h-[1px] bg-airbnb-border-light"></div>
+
+                    <!-- Quick Contact Details -->
+                    <div>
+                        <h3 class="text-xs uppercase font-extrabold text-airbnb-dark tracking-wider mb-3">Quick contact info</h3>
+                        <div class="space-y-2 text-xs text-airbnb-gray">
+                            <div class="flex items-center gap-2">
+                                <span>📧</span>
+                                <span class="text-airbnb-dark font-medium truncate">{{ user.email }}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span>📱</span>
+                                <span class="text-airbnb-dark font-medium">+1 (555) 234-5678</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span>📍</span>
+                                <span class="text-airbnb-dark font-medium">San Francisco, California</span>
                             </div>
                         </div>
                     </div>
@@ -208,7 +229,7 @@
                                     <div class="text-[11px] text-airbnb-gray font-medium">{{ b.listing_location }}</div>
                                     {% endif %}
                                     <div class="text-xs text-airbnb-gray mt-0.5">
-                                        📅 {{ b.check_in }} to {{ b.check_out }} ({{ b.nights or '—' }} nights)
+                                        📅 {{ b.check_in }} to {{ b.check_out }} ({{ b.nights or '—' }} nights{% if b.guests %}, {{ b.guests }} guest{% if b.guests > 1 %}s{% endif %}{% endif %})
                                     </div>
                                     <div class="text-xs font-extrabold text-brand mt-1.5">
                                         Total Paid: ${{ "%.2f"|format(b.total_price) }}
@@ -221,6 +242,12 @@
                                 <a href="/listings/{{ b.listing_id }}" class="px-3.5 py-1.5 text-xs font-bold border border-airbnb-border rounded-full hover:border-airbnb-dark transition-colors">
                                     View Stay
                                 </a>
+                                <button type="button" 
+                                        class="btn-contact-host px-3.5 py-1.5 text-xs font-bold border border-airbnb-border hover:border-airbnb-dark rounded-full transition-colors" 
+                                        data-booking-id="{{ b.booking_id }}"
+                                        data-listing-title="{{ b.listing_title or b.listing_id }}">
+                                    Contact Host
+                                </button>
                                 <button type="button" 
                                         class="btn-cancel-booking px-3.5 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-full transition-colors border border-transparent hover:border-red-200" 
                                         data-booking-id="{{ b.booking_id }}">
@@ -291,7 +318,7 @@
                                         <span class="font-extrabold text-sm text-airbnb-dark">${{ item.price_per_night }}</span>
                                         <span class="text-airbnb-gray text-[11px]"> night</span>
                                     </div>
-                                    <a href="/listings/{{ item.id }}" class="px-3 py-1 bg-airbnb-dark hover:bg-black text-white font-bold rounded-full transition-colors text-[11px]">
+                                    <a href="/checkout?listing_id={{ item.id }}" class="px-3.5 py-1.5 bg-brand hover:bg-brand-hover text-white font-bold rounded-full transition-colors text-[11px] shadow-sm">
                                         Book Now
                                     </a>
                                 </div>
@@ -385,6 +412,33 @@
         </div>
 
     </main>
+
+    <!-- Interactive Contact Host Modal -->
+    <div id="profileContactHostModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-airbnb-border space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-airbnb-border-light">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-brand/10 text-brand flex items-center justify-center font-bold text-sm">💬</div>
+                    <div>
+                        <div class="text-xs font-bold text-airbnb-dark" id="modalHostTitle">Contact Host</div>
+                        <div class="text-[10px] text-airbnb-gray" id="modalHostSubtitle">Trip reservation inquiry</div>
+                    </div>
+                </div>
+                <button type="button" id="btnCloseProfileHostModal" class="text-airbnb-gray hover:text-airbnb-dark font-bold text-lg">&times;</button>
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-airbnb-gray uppercase block mb-1">Your message to the Host</label>
+                <textarea id="profileHostMessageTxt" rows="4" placeholder="Hello! I have a question regarding my upcoming stay..." class="w-full text-xs p-3 border border-airbnb-border rounded-2xl focus:outline-none focus:border-airbnb-dark"></textarea>
+            </div>
+            <div id="profileHostMsgSuccess" class="hidden p-2.5 bg-emerald-50 text-emerald-800 rounded-xl text-xs font-semibold">
+                ✓ Message sent directly to your host! They will respond shortly.
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button type="button" id="btnCancelProfileHostModal" class="px-4 py-2 text-xs font-bold border border-airbnb-border rounded-full hover:border-airbnb-dark">Close</button>
+                <button type="button" id="btnSendProfileHostModal" class="px-5 py-2 text-xs font-bold bg-brand hover:bg-brand-hover text-white rounded-full">Send Message</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Toast Notification -->
     <div id="toastNotification" class="fixed bottom-6 right-6 bg-airbnb-dark text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none z-50 flex items-center gap-2">

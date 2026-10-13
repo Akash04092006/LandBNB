@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pricePerNight = parseFloat(document.body.dataset.price) || 100;
     const cleaningFee = parseFloat(document.body.dataset.cleaning) || 75.00;
     const serviceRate = parseFloat(document.body.dataset.serviceRate) || 0.12;
-    const activeUserId = 'user-001';
+    const activeUserId = document.body.dataset.userId || 'user-001';
 
     // DOM Elements
     const checkoutFormView = document.getElementById('checkoutFormView');
@@ -35,12 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputCardCvv = document.getElementById('inputCardCvv');
     const inputCardHolder = document.getElementById('inputCardHolder');
     const inputCardZip = document.getElementById('inputCardZip');
+    const inputBillingStreet = document.getElementById('inputBillingStreet');
+    const inputBillingCity = document.getElementById('inputBillingCity');
+    const inputBillingState = document.getElementById('inputBillingState');
     const cardBrandIcon = document.getElementById('cardBrandIcon');
 
     const tabCardPay = document.getElementById('tabCardPay');
     const tabApplePay = document.getElementById('tabApplePay');
     const cardPaymentForm = document.getElementById('cardPaymentForm');
     const applePaySimulator = document.getElementById('applePaySimulator');
+    const payPlanRadios = document.querySelectorAll('input[name="payPlan"]');
 
     // Summary Elements
     const summaryFormula = document.getElementById('summaryFormula');
@@ -58,6 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const receiptCheckOutDate = document.getElementById('receiptCheckOutDate');
     const receiptTotalPaid = document.getElementById('receiptTotalPaid');
 
+    // Host Contact Modal Elements
+    const btnOpenReceiptMessageHost = document.getElementById('btnOpenReceiptMessageHost');
+    const checkoutContactHostModal = document.getElementById('checkoutContactHostModal');
+    const btnCloseContactHostModal = document.getElementById('btnCloseContactHostModal');
+    const btnCancelHostMsg = document.getElementById('btnCancelHostMsg');
+    const btnSendHostMsg = document.getElementById('btnSendHostMsg');
+    const txtHostMessage = document.getElementById('txtHostMessage');
+    const hostMessageSuccessMsg = document.getElementById('hostMessageSuccessMsg');
+
     let currentNights = 4;
     let currentTotal = 0;
     let currentGuests = parseInt(valGuestCheckout ? valGuestCheckout.textContent : '1') || 1;
@@ -70,6 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setupDateAndGuestEditing();
         setupPaymentMethods();
         setupCardFormatting();
+        setupPayPlanToggles();
+        setupContactHostModal();
         recalculatePrices();
         btnConfirmPay.addEventListener('click', handlePaymentSubmit);
     }
@@ -111,9 +126,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isNaN(dIn.getTime()) || isNaN(dOut.getTime()) || dOut <= dIn) {
             btnConfirmPay.disabled = true;
             btnConfirmPay.classList.add('opacity-50', 'cursor-not-allowed');
+            showCheckoutError('Checkout date must be after check-in date.');
             return;
         }
 
+        hideCheckoutError();
         btnConfirmPay.disabled = false;
         btnConfirmPay.classList.remove('opacity-50', 'cursor-not-allowed');
 
@@ -128,9 +145,23 @@ document.addEventListener('DOMContentLoaded', () => {
         summaryAccommodation.textContent = `$${accommodation.toFixed(2)}`;
         summaryService.textContent = `$${service.toFixed(2)}`;
         summaryTotal.textContent = `$${currentTotal.toFixed(2)}`;
-        btnPayTotalText.textContent = `$${currentTotal.toFixed(2)}`;
+
+        const isPart = document.querySelector('input[name="payPlan"]:checked')?.value === 'part';
+        const displayAmt = isPart ? (currentTotal / 2) : currentTotal;
+        btnPayTotalText.textContent = `$${displayAmt.toFixed(2)}`;
+
         displayPayFullAmt.textContent = `$${currentTotal.toFixed(2)}`;
         displayPayPartAmt.textContent = `$${(currentTotal / 2).toFixed(2)}`;
+    }
+
+    function setupPayPlanToggles() {
+        payPlanRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                const isPart = radio.value === 'part';
+                const displayAmt = isPart ? (currentTotal / 2) : currentTotal;
+                btnPayTotalText.textContent = `$${displayAmt.toFixed(2)}`;
+            });
+        });
     }
 
     // =========================================================================
@@ -171,6 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 cardBrandIcon.textContent = '🔴 MC';
             } else if (val.startsWith('3')) {
                 cardBrandIcon.textContent = '🟩 AMEX';
+            } else if (val.startsWith('6')) {
+                cardBrandIcon.textContent = '🟧 DISC';
             } else {
                 cardBrandIcon.textContent = '💳';
             }
@@ -211,12 +244,63 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =========================================================================
+    // Contact Host Modal Interactions
+    // =========================================================================
+    function setupContactHostModal() {
+        if (!checkoutContactHostModal) return;
+
+        if (btnOpenReceiptMessageHost) {
+            btnOpenReceiptMessageHost.addEventListener('click', () => {
+                checkoutContactHostModal.classList.remove('hidden');
+                if (txtHostMessage) txtHostMessage.focus();
+            });
+        }
+
+        if (btnCloseContactHostModal) {
+            btnCloseContactHostModal.addEventListener('click', () => {
+                checkoutContactHostModal.classList.add('hidden');
+            });
+        }
+
+        if (btnCancelHostMsg) {
+            btnCancelHostMsg.addEventListener('click', () => {
+                checkoutContactHostModal.classList.add('hidden');
+            });
+        }
+
+        if (btnSendHostMsg) {
+            btnSendHostMsg.addEventListener('click', () => {
+                const msg = txtHostMessage ? txtHostMessage.value.trim() : '';
+                if (!msg) {
+                    alert('Please enter a short message for the host.');
+                    return;
+                }
+
+                btnSendHostMsg.disabled = true;
+                btnSendHostMsg.textContent = 'Sending...';
+
+                setTimeout(() => {
+                    if (hostMessageSuccessMsg) hostMessageSuccessMsg.classList.remove('hidden');
+                    btnSendHostMsg.disabled = false;
+                    btnSendHostMsg.textContent = 'Sent!';
+                    setTimeout(() => {
+                        checkoutContactHostModal.classList.add('hidden');
+                        if (hostMessageSuccessMsg) hostMessageSuccessMsg.classList.add('hidden');
+                        btnSendHostMsg.textContent = 'Send Message';
+                        if (txtHostMessage) txtHostMessage.value = '';
+                    }, 1200);
+                }, 600);
+            });
+        }
+    }
+
+    // =========================================================================
     // Payment Authorization & Booking Creation (POST /api/bookings)
     // =========================================================================
     async function handlePaymentSubmit() {
         hideCheckoutError();
 
-        // Simple card validation if card tab is selected
+        // Validate card details if card tab is selected
         if (!isApplePaySelected) {
             const rawCard = inputCardNumber.value.replace(/\D/g, '');
             if (rawCard.length < 12) {
@@ -236,6 +320,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputCardCvv.focus();
                 return;
             }
+            if (inputCardHolder && !inputCardHolder.value.trim()) {
+                showCheckoutError('Please enter the cardholder legal name.');
+                inputCardHolder.focus();
+                return;
+            }
+            if (inputBillingStreet && !inputBillingStreet.value.trim()) {
+                showCheckoutError('Please enter a valid billing street address.');
+                inputBillingStreet.focus();
+                return;
+            }
+            if (inputCardZip && !inputCardZip.value.trim()) {
+                showCheckoutError('Please enter a valid ZIP / postal code.');
+                inputCardZip.focus();
+                return;
+            }
         }
 
         btnConfirmPay.disabled = true;
@@ -249,7 +348,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 listing_id: listingId,
                 user_id: activeUserId,
                 check_in: inputEditCheckIn.value,
-                check_out: inputEditCheckOut.value
+                check_out: inputEditCheckOut.value,
+                guests: currentGuests
             };
 
             const res = await fetch('/api/bookings', {

@@ -470,6 +470,34 @@ def test_checkout_page_view(client):
     assert b"inputCardNumber" in response.data
 
 
+def test_checkout_page_detailed_elements(client):
+    """Test GET /checkout renders occupancy taxes, billing address, and host details."""
+    response = client.get("/checkout?listing_id=listing-001&user_id=user-001&guests=3")
+    assert response.status_code == 200
+    assert b"Occupancy taxes and fees" in response.data
+    assert b"Billing address" in response.data
+    assert b"inputBillingStreet" in response.data
+    assert b"256-bit SSL Secure Checkout" in response.data
+    assert b"checkoutSuccessView" in response.data
+
+
+def test_create_booking_with_guests_persistence(client, isolate_test_data):
+    """Test POST /api/bookings records guests count and listing location."""
+    payload = {
+        "listing_id": "listing-002",
+        "user_id": "user-001",
+        "check_in": "2026-12-01",
+        "check_out": "2026-12-04",
+        "guests": 3
+    }
+    response = client.post("/api/bookings", json=payload)
+    assert response.status_code == 201
+    booking = response.get_json()["booking"]
+    assert booking["guests"] == 3
+    assert "listing_image" in booking
+    assert "listing_location" in booking
+
+
 def test_profile_page_view(client):
     """Test GET /profile renders user dashboard with trips and wishlists."""
     response = client.get("/profile/user-001")
@@ -477,6 +505,20 @@ def test_profile_page_view(client):
     assert b"Sophia Chen" in response.data
     assert b"My Trips" in response.data
     assert b"Saved Wishlists" in response.data
+
+
+def test_profile_page_tabs_and_contact(client):
+    """Test GET /profile with tab query params renders quick contact details and Contact Host action."""
+    res_wishlist = client.get("/profile/user-001?tab=wishlists")
+    assert res_wishlist.status_code == 200
+    assert b"Your Saved Stays" in res_wishlist.data
+    assert b"btn-remove-wishlist" in res_wishlist.data
+
+    res_account = client.get("/profile/user-001?tab=account")
+    assert res_account.status_code == 200
+    assert b"Account Preferences" in res_account.data
+    assert b"Quick contact info" in res_account.data
+    assert b"btn-contact-host" in res_account.data
 
 
 

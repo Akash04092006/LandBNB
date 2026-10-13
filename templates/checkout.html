@@ -44,6 +44,9 @@
 </head>
 <body class="bg-white text-airbnb-dark font-sans antialiased min-h-screen flex flex-col"
       data-listing-id="{{ listing.id }}"
+      data-user-id="{{ user.user_id if user else 'user-001' }}"
+      data-user-name="{{ user.name if user else 'Sophia Chen' }}"
+      data-user-email="{{ user.email if user else 'sophia.chen@example.com' }}"
       data-price="{{ price_per_night }}"
       data-cleaning="{{ cleaning_fee }}"
       data-service-rate="0.12">
@@ -118,7 +121,7 @@
                         <div class="flex items-center justify-between py-3 border-t border-airbnb-border-light mt-2">
                             <div>
                                 <div class="text-xs font-bold text-airbnb-dark">Guests</div>
-                                <div class="text-xs text-airbnb-gray" id="displayTripGuests">{{ guests }} guest</div>
+                                <div class="text-xs text-airbnb-gray" id="displayTripGuests">{{ guests }} guest{% if guests|int > 1 %}s{% endif %}</div>
                             </div>
                             <button type="button" id="btnToggleEditGuests" class="text-xs font-bold text-airbnb-dark underline hover:text-brand">Edit</button>
                         </div>
@@ -127,9 +130,9 @@
                         <div id="editGuestsBox" class="hidden mt-2 p-3 rounded-2xl bg-airbnb-light border border-airbnb-border flex items-center justify-between text-xs">
                             <span class="font-bold">Number of guests:</span>
                             <div class="flex items-center gap-3">
-                                <button type="button" id="btnDecGuestCheckout" class="w-7 h-7 rounded-full border border-airbnb-border bg-white font-bold">-</button>
+                                <button type="button" id="btnDecGuestCheckout" class="w-7 h-7 rounded-full border border-airbnb-border bg-white font-bold hover:border-airbnb-dark">-</button>
                                 <span id="valGuestCheckout" class="font-bold w-4 text-center">{{ guests }}</span>
-                                <button type="button" id="btnIncGuestCheckout" class="w-7 h-7 rounded-full border border-airbnb-border bg-white font-bold">+</button>
+                                <button type="button" id="btnIncGuestCheckout" class="w-7 h-7 rounded-full border border-airbnb-border bg-white font-bold hover:border-airbnb-dark">+</button>
                             </div>
                         </div>
                     </div>
@@ -175,17 +178,18 @@
 
                         <!-- Payment Tabs: Card vs Apple Pay -->
                         <div class="flex gap-2 mb-4">
-                            <button type="button" id="tabCardPay" class="flex-1 py-2 rounded-xl text-xs font-bold border-2 border-airbnb-dark bg-white transition-all flex items-center justify-center gap-2">
+                            <button type="button" id="tabCardPay" class="flex-1 py-2.5 rounded-xl text-xs font-bold border-2 border-airbnb-dark bg-white transition-all flex items-center justify-center gap-2">
                                 <span>💳 Credit or Debit Card</span>
                             </button>
-                            <button type="button" id="tabApplePay" class="flex-1 py-2 rounded-xl text-xs font-bold border border-airbnb-border bg-airbnb-light hover:border-airbnb-dark transition-all flex items-center justify-center gap-2">
+                            <button type="button" id="tabApplePay" class="flex-1 py-2.5 rounded-xl text-xs font-bold border border-airbnb-border bg-airbnb-light hover:border-airbnb-dark transition-all flex items-center justify-center gap-2">
                                 <span> Apple Pay / Google Pay</span>
                             </button>
                         </div>
 
                         <!-- Card Input Form -->
-                        <div id="cardPaymentForm" class="space-y-3">
-                            <div class="border border-airbnb-border rounded-2xl overflow-hidden focus-within:border-airbnb-dark focus-within:ring-1 focus-within:ring-airbnb-dark transition-all">
+                        <div id="cardPaymentForm" class="space-y-4">
+                            <!-- Card Numbers Box -->
+                            <div class="border border-airbnb-border rounded-2xl overflow-hidden focus-within:border-airbnb-dark focus-within:ring-1 focus-within:ring-airbnb-dark transition-all bg-white">
                                 <div class="p-3 border-b border-airbnb-border bg-white">
                                     <label class="text-[9px] uppercase font-bold text-airbnb-gray block">Card number</label>
                                     <div class="flex items-center">
@@ -205,23 +209,67 @@
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="border border-airbnb-border rounded-2xl p-3 bg-white focus-within:border-airbnb-dark">
-                                    <label class="text-[9px] uppercase font-bold text-airbnb-gray block">Cardholder Name</label>
-                                    <input type="text" id="inputCardHolder" value="Sophia Chen" class="w-full text-xs font-semibold focus:outline-none bg-transparent">
+                            <!-- Cardholder Name -->
+                            <div class="border border-airbnb-border rounded-2xl p-3 bg-white focus-within:border-airbnb-dark">
+                                <label class="text-[9px] uppercase font-bold text-airbnb-gray block">Cardholder Name</label>
+                                <input type="text" id="inputCardHolder" value="{{ user.name if user else 'Sophia Chen' }}" class="w-full text-xs font-semibold focus:outline-none bg-transparent">
+                            </div>
+
+                            <!-- Billing Address Fields Styled Identically to Airbnb -->
+                            <div class="pt-2 space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-xs font-bold text-airbnb-dark">Billing address</label>
+                                    <span class="text-[11px] text-airbnb-gray">Required for verification</span>
                                 </div>
-                                <div class="border border-airbnb-border rounded-2xl p-3 bg-white focus-within:border-airbnb-dark">
-                                    <label class="text-[9px] uppercase font-bold text-airbnb-gray block">ZIP / Postal Code</label>
-                                    <input type="text" id="inputCardZip" placeholder="90265" class="w-full text-xs font-semibold focus:outline-none bg-transparent">
+                                <div class="border border-airbnb-border rounded-2xl overflow-hidden focus-within:border-airbnb-dark bg-white">
+                                    <div class="p-3 border-b border-airbnb-border">
+                                        <label class="text-[9px] uppercase font-bold text-airbnb-gray block">Street address</label>
+                                        <input type="text" id="inputBillingStreet" placeholder="100 Malibu Canyon Road" value="100 Malibu Canyon Road" class="w-full text-xs font-semibold focus:outline-none bg-transparent">
+                                    </div>
+                                    <div class="p-3 border-b border-airbnb-border">
+                                        <label class="text-[9px] uppercase font-bold text-airbnb-gray block">Apt or suite (optional)</label>
+                                        <input type="text" id="inputBillingApt" placeholder="Apt, suite, bldg." class="w-full text-xs font-semibold focus:outline-none bg-transparent">
+                                    </div>
+                                    <div class="grid grid-cols-2 border-b border-airbnb-border">
+                                        <div class="p-3 border-r border-airbnb-border">
+                                            <label class="text-[9px] uppercase font-bold text-airbnb-gray block">City</label>
+                                            <input type="text" id="inputBillingCity" placeholder="Malibu" value="Malibu" class="w-full text-xs font-semibold focus:outline-none bg-transparent">
+                                        </div>
+                                        <div class="p-3">
+                                            <label class="text-[9px] uppercase font-bold text-airbnb-gray block">State / Province</label>
+                                            <input type="text" id="inputBillingState" placeholder="CA" value="CA" class="w-full text-xs font-semibold focus:outline-none bg-transparent">
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="p-3 border-r border-airbnb-border">
+                                            <label class="text-[9px] uppercase font-bold text-airbnb-gray block">ZIP / Postal Code</label>
+                                            <input type="text" id="inputCardZip" placeholder="90265" value="90265" class="w-full text-xs font-semibold focus:outline-none bg-transparent">
+                                        </div>
+                                        <div class="p-3">
+                                            <label class="text-[9px] uppercase font-bold text-airbnb-gray block">Country / Region</label>
+                                            <select id="inputBillingCountry" class="w-full text-xs font-semibold focus:outline-none bg-transparent cursor-pointer">
+                                                <option value="US" selected>United States</option>
+                                                <option value="CA">Canada</option>
+                                                <option value="UK">United Kingdom</option>
+                                                <option value="AU">Australia</option>
+                                                <option value="FR">France</option>
+                                                <option value="DE">Germany</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Apple Pay Simulator Container -->
-                        <div id="applePaySimulator" class="hidden text-center py-6 border border-airbnb-border rounded-2xl bg-slate-50">
-                            <div class="text-3xl mb-2"></div>
-                            <div class="text-xs font-bold text-airbnb-dark mb-1">Apple Pay Ready</div>
-                            <p class="text-[11px] text-airbnb-gray max-w-xs mx-auto">Double-click side button or confirm with Touch ID to authorize transaction seamlessly.</p>
+                        <div id="applePaySimulator" class="hidden text-center py-8 border border-airbnb-border rounded-2xl bg-slate-50">
+                            <div class="text-4xl mb-2"></div>
+                            <div class="text-xs font-bold text-airbnb-dark mb-1">Apple Pay Authorized Device</div>
+                            <p class="text-[11px] text-airbnb-gray max-w-xs mx-auto mb-3">Double-click side button or confirm with Touch ID to authorize transaction seamlessly with Apple Pay.</p>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-800 text-[11px] font-bold rounded-full">
+                                <span>✓</span>
+                                <span>Card ending in 4242 linked</span>
+                            </span>
                         </div>
                     </div>
 
@@ -295,12 +343,17 @@
 
                             <div class="flex justify-between text-airbnb-gray">
                                 <span>Cleaning fee</span>
-                                <span class="text-airbnb-dark font-medium">$75.00</span>
+                                <span class="text-airbnb-dark font-medium">${{ "%.2f"|format(cleaning_fee) }}</span>
                             </div>
 
                             <div class="flex justify-between text-airbnb-gray">
                                 <span>LandBNB service fee (12%)</span>
                                 <span id="summaryService" class="text-airbnb-dark font-medium">${{ "%.2f"|format(service_fee) }}</span>
+                            </div>
+
+                            <div class="flex justify-between text-airbnb-gray">
+                                <span>Occupancy taxes and fees</span>
+                                <span id="summaryTaxes" class="text-airbnb-dark font-medium">${{ "%.2f"|format(total_taxes) }}</span>
                             </div>
                         </div>
 
@@ -327,7 +380,7 @@
                     ✓
                 </div>
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-airbnb-dark tracking-tight mb-2">You're going to {{ listing.location }}!</h1>
-                <p class="text-sm text-airbnb-gray">Your reservation is confirmed. We sent your receipt and check-in guide to <span class="font-bold text-airbnb-dark">sophia.chen@example.com</span>.</p>
+                <p class="text-sm text-airbnb-gray">Your reservation is confirmed. We sent your receipt and check-in guide to <span class="font-bold text-airbnb-dark" id="receiptEmailDisplay">{{ user.email if user else 'sophia.chen@example.com' }}</span>.</p>
             </div>
 
             <!-- Receipt Detail Card -->
@@ -387,16 +440,16 @@
                     </div>
                 </div>
 
-                <!-- Host Contact -->
+                <!-- Host Contact Details -->
                 <div class="flex items-center justify-between text-xs">
                     <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80" alt="Host Avatar" class="w-10 h-10 rounded-full object-cover border border-airbnb-border">
+                        <img src="{{ host.profile_image if (host and host.profile_image) else 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80' }}" alt="Host Avatar" class="w-10 h-10 rounded-full object-cover border border-airbnb-border">
                         <div>
-                            <div class="font-bold text-airbnb-dark">Hosted by {{ listing.host_name }}</div>
-                            <div class="text-airbnb-gray text-[11px]">Superhost · Rapid responder</div>
+                            <div class="font-bold text-airbnb-dark">Hosted by {{ host.name if (host and host.name) else listing.host_name }}</div>
+                            <div class="text-airbnb-gray text-[11px]">{{ host.email if (host and host.email) else 'superhost@landbnb.com' }} · Superhost</div>
                         </div>
                     </div>
-                    <button type="button" onclick="alert('Host message window opened!')" class="px-3.5 py-1.5 rounded-full border border-airbnb-border hover:border-airbnb-dark font-bold transition-colors">
+                    <button type="button" id="btnOpenReceiptMessageHost" class="px-3.5 py-1.5 rounded-full border border-airbnb-border hover:border-airbnb-dark font-bold transition-colors">
                         Message Host
                     </button>
                 </div>
@@ -405,7 +458,7 @@
 
             <!-- Receipt Actions -->
             <div class="flex flex-wrap items-center justify-center gap-4">
-                <a href="/profile/user-001" class="px-6 py-3 bg-airbnb-dark hover:bg-black text-white text-xs font-bold rounded-full transition-colors shadow">
+                <a href="/profile/{{ user.user_id if user else 'user-001' }}?tab=trips" class="px-6 py-3 bg-airbnb-dark hover:bg-black text-white text-xs font-bold rounded-full transition-colors shadow">
                     View in My Trips
                 </a>
                 <a href="/" class="px-6 py-3 bg-white border border-airbnb-border hover:border-airbnb-dark text-airbnb-dark text-xs font-bold rounded-full transition-colors shadow-sm">
@@ -419,6 +472,33 @@
         </div>
 
     </main>
+
+    <!-- Interactive Contact Host Modal -->
+    <div id="checkoutContactHostModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-airbnb-border space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-airbnb-border-light">
+                <div class="flex items-center gap-3">
+                    <img src="{{ host.profile_image if (host and host.profile_image) else 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80' }}" class="w-9 h-9 rounded-full object-cover">
+                    <div>
+                        <div class="text-xs font-bold text-airbnb-dark">Message {{ host.name if (host and host.name) else listing.host_name }}</div>
+                        <div class="text-[10px] text-airbnb-gray">Usually responds within an hour</div>
+                    </div>
+                </div>
+                <button type="button" id="btnCloseContactHostModal" class="text-airbnb-gray hover:text-airbnb-dark font-bold text-lg">&times;</button>
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-airbnb-gray uppercase block mb-1">Your message to Host</label>
+                <textarea id="txtHostMessage" rows="4" placeholder="Hi! I just booked my stay and had a quick question..." class="w-full text-xs p-3 border border-airbnb-border rounded-2xl focus:outline-none focus:border-airbnb-dark"></textarea>
+            </div>
+            <div id="hostMessageSuccessMsg" class="hidden p-2.5 bg-emerald-50 text-emerald-800 rounded-xl text-xs font-semibold">
+                ✓ Message sent to host! You will receive updates via email.
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button type="button" id="btnCancelHostMsg" class="px-4 py-2 text-xs font-bold border border-airbnb-border rounded-full hover:border-airbnb-dark">Close</button>
+                <button type="button" id="btnSendHostMsg" class="px-5 py-2 text-xs font-bold bg-brand hover:bg-brand-hover text-white rounded-full">Send Message</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="border-t border-airbnb-border-light bg-airbnb-light mt-auto">
