@@ -66,7 +66,7 @@
                     <!-- Where Trigger -->
                     <div id="triggerWhere" class="search-segment flex-1 px-3 py-1 text-left">
                         <div class="text-[11px] font-bold text-airbnb-dark tracking-wide uppercase">Where</div>
-                        <input id="inputWhere" type="text" placeholder="Search destinations" class="w-full bg-transparent text-xs text-airbnb-gray font-medium focus:outline-none placeholder-airbnb-gray truncate cursor-pointer" readonly>
+                        <input id="inputWhere" type="text" placeholder="Search destinations" class="w-full bg-transparent text-xs text-airbnb-gray font-medium focus:outline-none placeholder-airbnb-gray truncate cursor-pointer">
                     </div>
 
                     <div class="h-6 w-[1px] bg-airbnb-border flex-shrink-0"></div>
@@ -374,6 +374,16 @@
          MAIN LISTINGS GRID SECTION
          ============================================================================== -->
     <main class="max-w-[1780px] mx-auto px-4 sm:px-8 lg:px-12 py-6 flex-1 w-full">
+        {% if error %}
+        <div id="routeErrorBanner" class="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-sm font-semibold flex items-center justify-between animate-fadeIn">
+            <div class="flex items-center gap-2">
+                <span>⚠️</span>
+                <span>{{ error }}</span>
+            </div>
+            <a href="/" class="text-xs text-brand font-bold underline">Explore all stays</a>
+        </div>
+        {% endif %}
+
         <!-- Results Summary Bar -->
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-base sm:text-lg font-bold text-airbnb-dark flex items-center gap-2">

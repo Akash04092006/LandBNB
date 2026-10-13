@@ -170,20 +170,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupPaymentMethods() {
         tabCardPay.addEventListener('click', () => {
             isApplePaySelected = false;
-            tabCardPay.classList.replace('border-airbnb-border', 'border-airbnb-dark');
-            tabCardPay.classList.replace('bg-airbnb-light', 'bg-white');
-            tabApplePay.classList.replace('border-airbnb-dark', 'border-airbnb-border');
-            tabApplePay.classList.replace('bg-white', 'bg-airbnb-light');
+            tabCardPay.classList.remove('border-airbnb-border', 'border-airbnb-dark', 'text-airbnb-gray', 'bg-airbnb-light');
+            tabCardPay.classList.add('border-2', 'border-brand', 'text-brand', 'bg-white');
+            tabApplePay.classList.remove('border-2', 'border-brand', 'text-brand', 'bg-white');
+            tabApplePay.classList.add('border', 'border-airbnb-border', 'text-airbnb-gray', 'bg-airbnb-light');
             cardPaymentForm.classList.remove('hidden');
             applePaySimulator.classList.add('hidden');
         });
 
         tabApplePay.addEventListener('click', () => {
             isApplePaySelected = true;
-            tabApplePay.classList.replace('border-airbnb-border', 'border-airbnb-dark');
-            tabApplePay.classList.replace('bg-airbnb-light', 'bg-white');
-            tabCardPay.classList.replace('border-airbnb-dark', 'border-airbnb-border');
-            tabCardPay.classList.replace('bg-white', 'bg-airbnb-light');
+            tabApplePay.classList.remove('border-airbnb-border', 'border-airbnb-dark', 'text-airbnb-gray', 'bg-airbnb-light');
+            tabApplePay.classList.add('border-2', 'border-brand', 'text-brand', 'bg-white');
+            tabCardPay.classList.remove('border-2', 'border-brand', 'text-brand', 'bg-white');
+            tabCardPay.classList.add('border', 'border-airbnb-border', 'text-airbnb-gray', 'bg-airbnb-light');
             cardPaymentForm.classList.add('hidden');
             applePaySimulator.classList.remove('hidden');
         });

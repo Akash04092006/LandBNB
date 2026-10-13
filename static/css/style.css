@@ -1,5 +1,6 @@
 /* ==============================================================================
    LandBNB - Production Airbnb Design System & Utility Styles
+   Hardened for pixel-perfect fidelity against Airbnb's exact user experience.
    ============================================================================== */
 
 :root {
@@ -14,15 +15,75 @@
   --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
+html {
+  box-sizing: border-box;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   font-family: var(--font-main);
   color: var(--dark);
   background-color: #FFFFFF;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  width: 100%;
 }
 
-/* Hide scrollbar while preserving scroll functionality */
+/* ==============================================================================
+   Brand Primary Color Enforcements (#FF385C)
+   ============================================================================== */
+.text-brand {
+  color: var(--brand) !important;
+}
+
+.bg-brand {
+  background-color: var(--brand) !important;
+}
+
+.border-brand {
+  border-color: var(--brand) !important;
+}
+
+.hover\:bg-brand-hover:hover {
+  background-color: var(--brand-hover) !important;
+}
+
+.hover\:border-brand:hover {
+  border-color: var(--brand) !important;
+}
+
+.focus\:border-brand:focus {
+  border-color: var(--brand) !important;
+}
+
+/* Primary interactive button standard */
+.btn-brand, .btn-primary {
+  background-color: var(--brand);
+  color: #FFFFFF;
+  font-weight: 700;
+  border-radius: 9999px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-brand:hover, .btn-primary:hover {
+  background-color: var(--brand-hover);
+  transform: translateY(-1px);
+}
+
+.btn-brand:active, .btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ==============================================================================
+   Scrollbar & Overflow Handling
+   ============================================================================== */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -31,7 +92,9 @@ body {
   scrollbar-width: none;
 }
 
-/* Glassmorphism & Drop Shadows */
+/* ==============================================================================
+   Airbnb Elevation & Drop Shadow Tokens
+   ============================================================================== */
 .airbnb-shadow-sm {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
@@ -48,7 +111,40 @@ body {
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.08);
 }
 
-/* Category Filter Bar Styles */
+.airbnb-shadow-hover:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* ==============================================================================
+   Card Border Radiuses & Grid Consistency
+   ============================================================================== */
+.listing-card, .booking-card, .wishlist-item-card {
+  border-radius: 1rem; /* rounded-2xl */
+}
+
+.rounded-2xl {
+  border-radius: 1rem !important;
+}
+
+.rounded-3xl {
+  border-radius: 1.5rem !important;
+}
+
+/* Responsive grid scaling with zero overflow */
+#listingsGrid {
+  display: grid;
+  width: 100%;
+}
+
+@media (max-width: 639px) {
+  #listingsGrid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+/* ==============================================================================
+   Category Filter Bar Styles
+   ============================================================================== */
 .category-item {
   display: flex;
   flex-direction: column;
@@ -70,9 +166,9 @@ body {
 }
 
 .category-item.active {
-  color: var(--dark);
-  border-bottom-color: var(--dark);
-  font-weight: 600;
+  color: var(--brand) !important;
+  border-bottom-color: var(--brand) !important;
+  font-weight: 700;
 }
 
 .category-item svg {
@@ -83,7 +179,27 @@ body {
   transform: translateY(-1px);
 }
 
-/* Search Bar Pill Segment States */
+.category-item.active svg {
+  stroke: var(--brand);
+}
+
+/* ==============================================================================
+   Tab Navigation Indicator Styles
+   ============================================================================== */
+.tab-btn {
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.tab-btn.active, .tab-btn[data-active="true"] {
+  color: var(--brand) !important;
+  border-bottom-color: var(--brand) !important;
+  font-weight: 700;
+}
+
+/* ==============================================================================
+   Search Bar Pill Segment States
+   ============================================================================== */
 .search-segment {
   cursor: pointer;
   border-radius: 9999px;
@@ -99,7 +215,9 @@ body {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Popover Animations */
+/* ==============================================================================
+   Popover Animations
+   ============================================================================== */
 .popover-animate {
   animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -115,7 +233,9 @@ body {
   }
 }
 
-/* Wishlist Heart Pop Animation */
+/* ==============================================================================
+   Wishlist Heart Pop Animation & Coral Coloring
+   ============================================================================== */
 @keyframes heartPop {
   0% { transform: scale(1); }
   50% { transform: scale(1.3); }
@@ -126,7 +246,18 @@ body {
   animation: heartPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Image Carousel Navigation Styles */
+.heart-icon {
+  transition: transform 0.2s ease, fill 0.2s ease, stroke 0.2s ease;
+}
+
+.heart-icon.active, .heart-icon.saved {
+  fill: var(--brand) !important;
+  stroke: var(--brand) !important;
+}
+
+/* ==============================================================================
+   Image Carousel Navigation Styles
+   ============================================================================== */
 .carousel-nav-btn {
   opacity: 0;
   transition: opacity 0.2s ease, transform 0.15s ease, background-color 0.2s ease;
@@ -157,7 +288,9 @@ body {
   transform: scale(1.15);
 }
 
-/* Calendar Date Selector Styles */
+/* ==============================================================================
+   Calendar Date Selector Styles
+   ============================================================================== */
 .calendar-day {
   width: 40px;
   height: 40px;
@@ -208,7 +341,9 @@ body {
   text-decoration: line-through;
 }
 
-/* Modal Transition */
+/* ==============================================================================
+   Modal Transition
+   ============================================================================== */
 .modal-overlay {
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(4px);

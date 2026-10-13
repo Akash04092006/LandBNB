@@ -34,7 +34,6 @@ env.bak/
 venv.bak/
 .venv/
 .env/
-ENV/
 
 # Operating System Files
 .DS_Store
@@ -51,10 +50,12 @@ Thumbs.db
 .env.*
 !.env.example
 
-# Local Databases & SQLite
+# Local Databases & Atomic Staging Files
 *.sqlite
 *.sqlite3
 *.db
+*.tmp
+*.json.tmp
 instance/
 
 # Application Logs
@@ -62,13 +63,16 @@ instance/
 logs/
 *.pid
 
-# Testing & Code Quality
+# Testing, Code Quality & Local Artifacts
 .pytest_cache/
 .coverage
 .coverage.*
 htmlcov/
 .mypy_cache/
 .ruff_cache/
+scratch/
+.system_generated/
+.agents/
 
 # IDE & Editor Directories
 .vscode/

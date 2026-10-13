@@ -173,23 +173,23 @@
                 <div class="flex border-b border-airbnb-border gap-2 sm:gap-6 overflow-x-auto no-scrollbar">
                     <button type="button" 
                             id="tabBtnTrips" 
-                            class="tab-btn pb-3 px-2 font-bold text-sm border-b-2 border-airbnb-dark text-airbnb-dark transition-all flex items-center gap-2 flex-shrink-0" 
+                            class="tab-btn pb-3 px-2 font-bold text-sm border-b-2 {% if active_tab == 'trips' %}border-brand text-brand{% else %}border-transparent text-airbnb-gray hover:text-airbnb-dark{% endif %} transition-all flex items-center gap-2 flex-shrink-0" 
                             data-target="tabContentTrips">
                         <span>My Trips</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] bg-airbnb-dark text-white font-bold" id="badgeTripsTab">{{ bookings|length }}</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] {% if active_tab == 'trips' %}bg-brand text-white{% else %}bg-slate-100 text-airbnb-dark{% endif %} font-bold" id="badgeTripsTab">{{ bookings|length }}</span>
                     </button>
 
                     <button type="button" 
                             id="tabBtnWishlists" 
-                            class="tab-btn pb-3 px-2 font-bold text-sm border-b-2 border-transparent text-airbnb-gray hover:text-airbnb-dark transition-all flex items-center gap-2 flex-shrink-0" 
+                            class="tab-btn pb-3 px-2 font-bold text-sm border-b-2 {% if active_tab == 'wishlists' %}border-brand text-brand{% else %}border-transparent text-airbnb-gray hover:text-airbnb-dark{% endif %} transition-all flex items-center gap-2 flex-shrink-0" 
                             data-target="tabContentWishlists">
                         <span>Saved Wishlists</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-airbnb-dark font-bold" id="badgeWishlistTab">{{ wishlist_listings|length }}</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] {% if active_tab == 'wishlists' %}bg-brand text-white{% else %}bg-slate-100 text-airbnb-dark{% endif %} font-bold" id="badgeWishlistTab">{{ wishlist_listings|length }}</span>
                     </button>
 
                     <button type="button" 
                             id="tabBtnAccount" 
-                            class="tab-btn pb-3 px-2 font-bold text-sm border-b-2 border-transparent text-airbnb-gray hover:text-airbnb-dark transition-all flex items-center gap-2 flex-shrink-0" 
+                            class="tab-btn pb-3 px-2 font-bold text-sm border-b-2 {% if active_tab == 'account' %}border-brand text-brand{% else %}border-transparent text-airbnb-gray hover:text-airbnb-dark{% endif %} transition-all flex items-center gap-2 flex-shrink-0" 
                             data-target="tabContentAccount">
                         <span>Account Settings</span>
                     </button>
@@ -198,7 +198,7 @@
                 <!-- ==================================================================
                      TAB 1: MY TRIPS & BOOKINGS LIST
                      ================================================================== -->
-                <div id="tabContentTrips" class="tab-content space-y-4">
+                <div id="tabContentTrips" class="tab-content {% if active_tab != 'trips' %}hidden{% endif %} space-y-4">
                     <div class="flex items-center justify-between">
                         <h2 class="text-lg font-bold text-airbnb-dark">Confirmed Reservations</h2>
                         <span class="text-xs text-airbnb-gray">Sorted by latest reservation</span>
@@ -272,7 +272,7 @@
                 <!-- ==================================================================
                      TAB 2: SAVED WISHLISTS MANAGEMENT GRID
                      ================================================================== -->
-                <div id="tabContentWishlists" class="tab-content hidden space-y-4">
+                <div id="tabContentWishlists" class="tab-content {% if active_tab != 'wishlists' %}hidden{% endif %} space-y-4">
                     <div class="flex items-center justify-between">
                         <h2 class="text-lg font-bold text-airbnb-dark">Your Saved Stays (<span id="wishlistCountHeader">{{ wishlist_listings|length }}</span>)</h2>
                         <span class="text-xs text-airbnb-gray">Saved to your private collection</span>
@@ -341,7 +341,7 @@
                 <!-- ==================================================================
                      TAB 3: ACCOUNT SETTINGS
                      ================================================================== -->
-                <div id="tabContentAccount" class="tab-content hidden space-y-6">
+                <div id="tabContentAccount" class="tab-content {% if active_tab != 'account' %}hidden{% endif %} space-y-6">
                     <div class="flex items-center justify-between">
                         <h2 class="text-lg font-bold text-airbnb-dark">Account Preferences</h2>
                         <span class="text-xs text-airbnb-gray">Manage profile information</span>

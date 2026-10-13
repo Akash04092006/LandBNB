@@ -188,7 +188,7 @@ def listing_detail_page(listing_id: str):
     target_listing = next((l for l in listings if str(l.get("id")) == str(listing_id)), None)
     if not target_listing:
         # Fallback to home page or 404
-        return render_template("index.html", error=f"Listing {listing_id} not found"), 404
+        return render_template("index.html", listings=listings, total_listings=len(listings), error=f"Listing {listing_id} not found"), 404
 
     all_reviews = load_json_file("reviews.json")
     matching_reviews = [r for r in all_reviews if str(r.get("listing_id")) == str(listing_id)] if isinstance(all_reviews, list) else []
@@ -199,6 +199,13 @@ def listing_detail_page(listing_id: str):
         (u for u in all_users if str(u.get("name", "")).strip().lower() == host_name.strip().lower()),
         None
     ) if isinstance(all_users, list) else None
+
+    if not host_user:
+        host_user = {
+            "name": host_name or "LandBNB Superhost",
+            "profile_image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80",
+            "email": f"{host_name.lower().replace(' ', '.')}@example.com" if host_name else "host@landbnb.com"
+        }
 
     return render_template(
         "listing_detail.html",
@@ -212,16 +219,19 @@ def listing_detail_page(listing_id: str):
 @app.route("/checkout")
 def checkout_page():
     """Dedicated booking checkout and payment summary view."""
-    listing_id = request.args.get("listing_id", "listing-001")
+    listing_param = request.args.get("listing_id")
     listings = load_json_file("listings.json")
     if not isinstance(listings, list):
         listings = []
 
-    target_listing = next((l for l in listings if str(l.get("id")) == str(listing_id)), None)
-    if not target_listing and listings:
-        target_listing = listings[0]
-    elif not target_listing:
-        return render_template("index.html", error="No listing selected"), 404
+    if listing_param:
+        target_listing = next((l for l in listings if str(l.get("id")) == str(listing_param)), None)
+        if not target_listing:
+            return render_template("index.html", listings=listings, total_listings=len(listings), error=f"Listing {listing_param} not found"), 404
+    else:
+        target_listing = listings[0] if listings else None
+        if not target_listing:
+            return render_template("index.html", listings=[], total_listings=0, error="No listing selected"), 404
 
     # Resolve active user and host
     all_users = load_json_file("users.json")
@@ -238,6 +248,12 @@ def checkout_page():
         (u for u in all_users if str(u.get("name", "")).strip().lower() == host_name.strip().lower()),
         None
     )
+    if not host_user:
+        host_user = {
+            "name": host_name or "LandBNB Superhost",
+            "profile_image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80",
+            "email": f"{host_name.lower().replace(' ', '.')}@example.com" if host_name else "host@landbnb.com"
+        }
 
     # Extract or calculate dates
     check_in = request.args.get("check_in", "")
@@ -296,10 +312,9 @@ def profile_page(user_id: str = "user-001"):
         users = []
 
     target_user = next((u for u in users if str(u.get("user_id")) == str(user_id)), None)
-    if not target_user and users:
-        target_user = users[0]
-    elif not target_user:
-        return render_template("index.html", error="User not found"), 404
+    if not target_user:
+        listings = load_json_file("listings.json")
+        return render_template("index.html", listings=listings, total_listings=len(listings) if isinstance(listings, list) else 0, error=f"User {user_id} not found"), 404
 
     # Fetch user bookings and listing index
     all_bookings = load_json_file("bookings.json")
@@ -341,7 +356,9 @@ def profile_page(user_id: str = "user-001"):
         if str(item_id) in listings_by_id
     ]
 
-    active_tab = request.args.get("tab", "trips")
+    active_tab = request.args.get("tab", "trips").strip().lower()
+    if active_tab not in ["trips", "wishlists", "account"]:
+        active_tab = "trips"
 
     return render_template(
         "profile.html",

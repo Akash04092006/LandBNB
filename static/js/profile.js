@@ -64,13 +64,23 @@ document.addEventListener('DOMContentLoaded', () => {
     function switchTab(activeBtn, targetContentId) {
         // Reset all buttons styling
         tabButtons.forEach(b => {
-            b.classList.remove('border-airbnb-dark', 'text-airbnb-dark');
+            b.classList.remove('border-brand', 'text-brand', 'border-airbnb-dark', 'text-airbnb-dark');
             b.classList.add('border-transparent', 'text-airbnb-gray');
+            const badge = b.querySelector('span:last-child');
+            if (badge) {
+                badge.classList.remove('bg-brand', 'text-white');
+                badge.classList.add('bg-slate-100', 'text-airbnb-dark');
+            }
         });
 
         // Set active button
-        activeBtn.classList.remove('border-transparent', 'text-airbnb-gray');
-        activeBtn.classList.add('border-airbnb-dark', 'text-airbnb-dark');
+        activeBtn.classList.remove('border-transparent', 'text-airbnb-gray', 'border-airbnb-dark', 'text-airbnb-dark');
+        activeBtn.classList.add('border-brand', 'text-brand');
+        const activeBadge = activeBtn.querySelector('span:last-child');
+        if (activeBadge) {
+            activeBadge.classList.remove('bg-slate-100', 'text-airbnb-dark');
+            activeBadge.classList.add('bg-brand', 'text-white');
+        }
 
         // Hide all tab content
         tabContents.forEach(c => c.classList.add('hidden'));

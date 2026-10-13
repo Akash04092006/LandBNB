@@ -159,9 +159,49 @@ document.addEventListener('DOMContentLoaded', () => {
         setupCategoryScroll();
         setupFiltersModal();
         setupModals();
+        initUrlQueryParams();
         
         await loadUserData();
         await fetchAndRenderListings();
+    }
+
+    function initUrlQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        const cat = params.get('category');
+        if (cat) {
+            state.currentCategory = cat;
+            const targetItem = document.querySelector(`.category-item[data-category="${cat}"]`);
+            if (targetItem) {
+                document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
+                targetItem.classList.add('active');
+            }
+        }
+        const loc = params.get('location');
+        if (loc) {
+            state.searchLocation = loc;
+            if (inputWhere) inputWhere.value = loc;
+        }
+        const minP = params.get('min_price');
+        if (minP && !isNaN(parseFloat(minP))) {
+            state.minPrice = parseFloat(minP);
+            if (filterMinPrice) filterMinPrice.value = minP;
+        }
+        const maxP = params.get('max_price');
+        if (maxP && !isNaN(parseFloat(maxP))) {
+            state.maxPrice = parseFloat(maxP);
+            if (filterMaxPrice) filterMaxPrice.value = maxP;
+        }
+        const ams = params.get('amenities');
+        if (ams) {
+            ams.split(',').forEach(a => {
+                const trimmed = a.trim();
+                if (trimmed) {
+                    state.selectedAmenities.add(trimmed);
+                    const cb = document.querySelector(`.filter-amenity-checkbox[value="${trimmed}"]`);
+                    if (cb) cb.checked = true;
+                }
+            });
+        }
     }
 
     // Sticky Header Scroll Shadow
@@ -509,9 +549,27 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Direct Text Input in inputWhere
+        if (inputWhere) {
+            inputWhere.addEventListener('input', (e) => {
+                state.searchLocation = e.target.value.trim();
+            });
+            inputWhere.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    state.searchLocation = inputWhere.value.trim();
+                    closeAllPopovers();
+                    fetchAndRenderListings();
+                }
+            });
+        }
+
         // Search Submit Action Button
         btnSearchSubmit.addEventListener('click', (e) => {
             e.stopPropagation();
+            if (inputWhere) {
+                state.searchLocation = inputWhere.value.trim();
+            }
             closeAllPopovers();
             fetchAndRenderListings();
         });
